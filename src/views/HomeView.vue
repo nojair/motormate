@@ -5,7 +5,7 @@ import Location from '@/assets/icons/location.svg'
 
 const services = ref([
       {
-        name: 'Mantenimiento Preventivo',
+        name: 'Mantenimiento Preventivos',
         organization: 'Nombre del taller',
         image: 'Icono de herramientas de mantenimiento',
         description: 'Servicio regular para mantener el rendimiento óptimo del vehículo.',
