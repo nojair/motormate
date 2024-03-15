@@ -8,11 +8,16 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      name: 'Home',
+      redirect: '/all-services'
+    },
+    {
+      path: '/all-services',
       name: 'AllServices',
       component: AllServicesView
     },
     {
-      path: '/cashWashServices',
+      path: '/car-wash-services',
       name: 'CarWashServices',
       component: CarWashServicesView
     },
