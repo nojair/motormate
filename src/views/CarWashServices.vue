@@ -201,7 +201,11 @@ function goToWhatsapp(workshop:any): String {
 
 <template>
   <Layout>
-    <div class="md:container md:mx-auto bg-gray-50 pt-5 pb-10">
+    <div class="md:container md:mx-auto pt-5">
+      <h1 class="text-2xl text-left pl-5 text-blue-900 font-black mb-4">LAVADO DE AUTOMÓVILES</h1>
+
+      <p class="text-left pl-5 text-blue-900 font-normal mb-6">Lista de talleres de lavado de automóviles disponibles <strong>a domicilio y de forma presencial</strong>.</p>
+
       <div class="flex flex-row flex-wrap justify-evenly items-center">
         <div v-for="workshop in carWashWorkshops" :key="workshop.key" class="cursor-default w-[21rem] h-[26rem] mb-6 p-2 mr-1 bg-green-100 flex flex-col justify-center items-center rounded-lg shadow-xl">
           <p class="mb-3 text-center text-2xl font-black" :class="{ 'text-orange-600': workshop.isOnline, 'text-blue-600': !workshop.isOnline }">{{ workshop.organization }}</p>
@@ -212,7 +216,7 @@ function goToWhatsapp(workshop:any): String {
               <img :src="Location" alt="Location icon" class="w-4">
               <p class="text-xs font-semibold">{{ workshop.location.address }}</p>
             </span>
-            <button @click="handleShowGoogleMapsModal(workshop.location)" class="text-xs font-bold text-white bg-green-500 hover:text-green-500 hover:bg-white border-2 border-green-500 hover:border-green-500 rounded-lg py-1 px-10">Ver mapa</button>
+            <button @click="handleShowGoogleMapsModal(workshop.location)" class="text-xs font-bold text-white bg-gray-500 hover:text-gray-500 hover:bg-white border-2 border-gray-500 hover:gray-green-500 rounded-lg py-1 px-10">Ver mapa</button>
           </span>
           <div class="flex flex-col justify-center items-center mb-4">
             <p class="mb-1 text-center text-base text-orange-600 font-black w-ful">Lavado exterior: {{ workshop.price.exteriorWash }}</p>
@@ -225,12 +229,6 @@ function goToWhatsapp(workshop:any): String {
           </button>
         </div>
       </div>
-
-      <footer class="footer">
-        <div class="pt-10 pb-3 px-10 text-center text-orange-700 font-bold">
-          <p>© {{ new Date().getFullYear() }} Motormate. Todos los derechos reservados.</p>
-        </div>
-      </footer>
     </div>
   </Layout>
 </template>

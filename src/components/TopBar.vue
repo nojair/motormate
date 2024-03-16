@@ -44,14 +44,15 @@ async function logout() {
     <div class="flex flex-row justify-between items-center">
       <div class="flex flex-row justify-between items-center">
         <template v-if="userStore.uid">
-          <div class="flex flex-col" @mouseenter="isOverProfile = true" @mouseleave="isOverProfile = false">
+          <div class="cursor-default bg-white rounded-md h-12 min-w-fit px-2 flex flex-col justify-center items-center" @mouseenter="isOverProfile = true" @mouseleave="isOverProfile = false">
             <div class="flex flex-row justify-between items-center">
-              <img :src="ProfilePNG" alt="AVATAR" class="w-8">
-              <p>{{ authStore.email || '-' }}</p>
+              <img :src="ProfilePNG" alt="AVATAR" class="w-8 mr-2">
+              <p class="text-blue-900 font-medium">{{ authStore.email || '-' }}</p>
             </div>
-            <div v-if="isOverProfile" @click="logout" class="flex flex-col justify-between items-center">
-              <p>Cerrar sesión</p>
-            </div>
+            <button v-if="isOverProfile" @click="logout" class="cursor-pointer py-1 font-normal rounded-md border-blue-100 border-2 bg-blue-900 text-blue-100 hover:border-blue-900 hover:bg-blue-100 hover:text-blue-900 w-44 top-[4.3em] absolute flex flex-col justify-between items-center">
+              <div class="absolute w-0 h-0" style="top: -10px; left: 75px; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 10px solid #1e3a8a;"></div>
+              Cerrar sesión
+            </button>
           </div>
         </template>
         <template v-else>

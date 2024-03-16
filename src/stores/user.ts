@@ -9,7 +9,7 @@ export const useUserStore = defineStore('userStore', () => {
   const firstName = ref('')
   const lastName = ref('')
   const phone = ref('')
-  const car = reactive({
+  const cars = reactive([{
     brand: '',
     model: '',
     year: '',
@@ -18,15 +18,32 @@ export const useUserStore = defineStore('userStore', () => {
     soatExpiry: null,
     annualInspection: null,
     technicalInspection: null
-  })
+  }])
+
+  function addCar() {
+    cars.push({
+      brand: '',
+      model: '',
+      year: '',
+      mileage: '',
+      fuelType: 'gasolina',
+      soatExpiry: null,
+      annualInspection: null,
+      technicalInspection: null
+    })
+  }
+
+  function removeCar(carIndex: number) {
+    cars.splice(carIndex, 1)
+  }
 
   function setUser(userData: {
     uid: string,
     firstName: string,
     lastName: string,
     phone: string,
-    car: {
-      brand: any,
+    cars: {
+      brand: string,
       model: string,
       year: string,
       mileage: string,
@@ -34,12 +51,12 @@ export const useUserStore = defineStore('userStore', () => {
       soatExpiry: string,
       annualInspection: string,
       technicalInspection: string
-}}) {
+  }[]}) {
     uid.value = userData.uid || ''
     firstName.value = userData.firstName || ''
     lastName.value = userData.lastName || ''
     phone.value = userData.phone || ''
-    Object.assign(car, userData.car || {
+    Object.assign(cars, userData.cars || [{
       brand: '',
       model: '',
       year: '',
@@ -48,7 +65,7 @@ export const useUserStore = defineStore('userStore', () => {
       soatExpiry: '',
       annualInspection: '',
       technicalInspection: ''
-    })
+    }])
   }
 
   function resetUser() {
@@ -56,7 +73,7 @@ export const useUserStore = defineStore('userStore', () => {
     firstName.value = ''
     lastName.value = ''
     phone.value = ''
-    Object.assign(car, {
+    Object.assign(cars, [{
       brand: '',
       model: '',
       year: '',
@@ -65,7 +82,7 @@ export const useUserStore = defineStore('userStore', () => {
       soatExpiry: '',
       annualInspection: '',
       technicalInspection: ''
-    })
+    }])
   }
 
   async function getUserByUid(userUid: string | null) {
@@ -73,8 +90,6 @@ export const useUserStore = defineStore('userStore', () => {
       const usersCollection = collection(db, 'users')
       const customQuery = query(usersCollection, where('uid', '==', userUid))
       const querySnapshot = await getDocs(customQuery)
-
-      const docs = querySnapshot.docs
 
       querySnapshot.docs.map((doc: any) => {
         const foundUserData = doc.data()
@@ -97,7 +112,7 @@ export const useUserStore = defineStore('userStore', () => {
         firstName: '',
         lastName: '',
         phone: '',
-        car: {
+        cars: [{
           brand: '',
           model: '',
           year: '',
@@ -106,7 +121,7 @@ export const useUserStore = defineStore('userStore', () => {
           soatExpiry: '',
           annualInspection: '',
           technicalInspection: ''
-        }
+        }]
       }
       setUser(initialData)
     
@@ -127,5 +142,5 @@ export const useUserStore = defineStore('userStore', () => {
     }
   }
 
-  return { id, uid, firstName, lastName, phone, car, setUser, getUserByUid, createUser, updateUser, resetUser }
+  return { id, uid, firstName, lastName, phone, cars, setUser, getUserByUid, createUser, updateUser, resetUser, addCar, removeCar }
 })
