@@ -202,9 +202,9 @@ function goToWhatsapp(workshop:any): String {
 <template>
   <Layout>
     <div class="md:container md:mx-auto pt-5">
-      <h1 class="text-2xl text-left pl-5 text-blue-900 font-black mb-4">LAVADO DE AUTOMÓVILES</h1>
+      <h1 class="text-2xl text-left px-5 text-blue-900 font-black mb-4">LAVADO DE AUTOMÓVILES</h1>
 
-      <p class="text-left pl-5 text-blue-900 font-normal mb-6">Lista de talleres de lavado de automóviles disponibles <strong>a domicilio y de forma presencial</strong>.</p>
+      <p class="text-left px-5 text-blue-900 font-normal mb-6">Lista de talleres de lavado de automóviles disponibles <strong>a domicilio y de forma presencial</strong>.</p>
 
       <div class="flex flex-row flex-wrap justify-evenly items-center">
         <div v-for="workshop in carWashWorkshops" :key="workshop.key" class="cursor-default w-[21rem] h-[26rem] mb-6 p-2 mr-1 bg-green-100 flex flex-col justify-center items-center rounded-lg shadow-xl">

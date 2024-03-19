@@ -14,9 +14,11 @@
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
+    "@vee-validate/yup": "^4.12.6",
     "firebase": "^10.8.1",
     "js-cookie": "^3.0.5",
     "pinia": "^2.1.7",
+    "vee-validate": "^4.12.6",
     "vue": "^3.4.15",
     "vue-router": "^4.2.5"
   },

@@ -1,27 +1,30 @@
 <script setup lang="ts">
 import Layout from '@/components/Layout.vue'
-import { useUserStore } from '@/stores/user'
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user'
+import { useAlertStore } from '@/stores/modal'
+import { useAuthStore } from '@/stores/auth'
 
+const authStore = useAuthStore()
+
+const isTouched = ref(false)
 const userStore = useUserStore()
+const alertStore = useAlertStore()
 const router = useRouter()
-
-function submitForm(): void {
-  userStore.updateUser({
-    uid: userStore.uid,
-    firstName: userStore.firstName,
-    lastName: userStore.lastName,
-    phone: userStore.phone,
-    cars: userStore.cars
-  }).then(() => {
-    alert('Tus datos se actualizaron con éxito')
-  })
-}
 
 onMounted(() => {
   userStore.uid ? null : (router.push({ name: 'Home' }))
 })
+
+function submitFormData() {
+  authStore.setIsLoading(true)
+  isTouched.value ? null : isTouched.value = true
+  userStore.submitUserForm(userStore).then(() => {
+    authStore.setIsLoading(false)
+    alertStore.setShowAlert(true)
+  })
+}
 </script>
 
 <template>
@@ -34,38 +37,44 @@ onMounted(() => {
       <form class="mb-4 rounded-md w-11/12 mx-5 p-5 flex flex-col justify-center items-start bg-blue-100">
         <h2 class="text-lg text-left text-blue-900 font-bold mb-6">Información de contacto</h2>
 
-        <div class="field flex flex-col mb-2 w-full">
-          <label for="first-name" class="text-blue-900 font-bold text-xs mb-1">Nombres</label>
+        <div class="mb-4 field flex flex-col w-full">
+          <label for="first-name" class="text-blue-900 font-bold text-xs mb-1">Nombres*</label>
           <input
             id="first-name"
             v-model="userStore.firstName"
             type="text"
             placeholder="Ingresa tu nombre"
-            class="mb-4 pl-2"
+            class="pl-2"
             style="outline: none;"
+            :class="{ 'border-red-400 border-2 rounded-xs': isTouched && userStore.errors && userStore.errors.firstName }"
           />
+          <p v-if="isTouched && userStore.errors && userStore.errors.firstName" class="text-xs text-red-700 font-medium pl-2">Los nombres son requeridos</p>
         </div>
-        <div class="field flex flex-col w-full">
-          <label for="last-name" class="text-blue-900 font-bold text-xs mb-1">Apellidos</label>
+        <div class="mb-4 field flex flex-col w-full">
+          <label for="last-name" class="text-blue-900 font-bold text-xs mb-1">Apellidos*</label>
           <input
             id="last-name"
             v-model="userStore.lastName"
             type="text"
             placeholder="Ingresa tus apellidos"
-            class="mb-4 pl-2"
+            class="pl-2"
             style="outline: none;"
+            :class="{ 'border-red-400 border-2 rounded-xs': isTouched && userStore.errors && userStore.errors.lastName }"
           />
+          <p v-if="isTouched && userStore.errors && userStore.errors.lastName" class="text-xs text-red-700 font-medium pl-2">Los apellidos son requerido</p>
         </div>
         <div class="field flex flex-col w-full">
-          <label for="phone" class="text-blue-900 font-bold text-xs mb-1">Teléfono</label>
+          <label for="phone" class="text-blue-900 font-bold text-xs mb-1">Teléfono*</label>
           <input
             id="phone"
             v-model="userStore.phone"
             type="tel"
             placeholder="Ingresa tu número de teléfono"
-            class="mb-4 pl-2"
+            class="mb-1 pl-2"
             style="outline: none;"
+            :class="{ 'border-red-400 border-2 rounded-xs': isTouched && userStore.errors && userStore.errors.phone }"
           />
+          <p v-if="isTouched && userStore.errors && userStore.errors.phone" class="text-xs text-red-700 font-medium pl-2">El teléfono es requerido</p>
         </div>
       </form>
 
@@ -78,7 +87,7 @@ onMounted(() => {
         <span v-for="(car, index) in userStore.cars" :key="index" class="flex flex-col justify-between items-center w-full">
           <span class="w-full flex flex-row justify-between items-center mb-4">
             <p class="text-xl text-left text-blue-600 font-black">AUTO N° {{ index + 1 }}</p>
-            <button type="button" @click="userStore.removeCar(index)" class="ml-4 px-2 rounded-md hover:bg-blue-600 hover:text-white font-bold text-blue-600 bg-white">Descartar auto</button>
+            <button type="button" @click="userStore.removeCar(index)" class="ml-4 px-2 rounded-md hover:bg-blue-600 hover:text-white font-bold text-blue-600 bg-white">Quitar auto</button>
           </span>
 
           <span class="w-full flex flex-row justify-between items-center">
@@ -178,7 +187,7 @@ onMounted(() => {
         </span>
       </form>
 
-      <button type="submit" @click="submitForm" class="w-11/12 flex flex-row justify-center items-center mx-5 mb-3 p-1 rounded-md bg-blue-600 hover:opacity-80 text-blue-100 font-bold">GUARDAR</button>
+      <button type="button" @click="submitFormData" class="w-11/12 flex flex-row justify-center items-center mx-5 mb-3 p-1 rounded-md bg-blue-600 hover:opacity-80 text-blue-100 font-bold">GUARDAR</button>
     </div>
   </Layout>
 </template>

@@ -5,6 +5,11 @@ import { ref } from 'vue'
 export const useAuthStore = defineStore('auth', () => {
   const email = ref<string | null>('')
   const uid = ref<string | null>('')
+  const isLoading = ref<boolean>(false)
+
+  function setIsLoading(newIsLoading: boolean) {
+    isLoading.value = newIsLoading
+  }
 
   async function getFirebaseUser(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
@@ -22,5 +27,5 @@ export const useAuthStore = defineStore('auth', () => {
     })
   }
 
-  return { email, uid, getFirebaseUser }
+  return { isLoading, setIsLoading, email, uid, getFirebaseUser }
 })

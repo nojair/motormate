@@ -2,13 +2,27 @@ import { defineStore } from 'pinia'
 import { ref, reactive } from 'vue'
 import { db } from '@/firebase'
 import { collection, query, where, getDocs, addDoc, updateDoc, doc } from 'firebase/firestore'
+import { useForm } from 'vee-validate'
+import { toTypedSchema } from '@vee-validate/yup'
+import * as Yup from 'yup'
+
+const validationSchema = toTypedSchema(
+  Yup.object({
+    firstName: Yup.string().required(),
+    lastName: Yup.string().required(),
+    phone: Yup.string().required()
+  }
+))
 
 export const useUserStore = defineStore('userStore', () => {
+  const { errors, defineField, handleSubmit } = useForm({ validationSchema })
+
+  const [firstName, firstNameProps] = defineField('firstName')
+  const [lastName, lastNameProps] = defineField('lastName')
+  const [phone, phoneProps] = defineField('phone')
+
   const id = ref('')
   const uid = ref('')
-  const firstName = ref('')
-  const lastName = ref('')
-  const phone = ref('')
   const cars = reactive([{
     brand: '',
     model: '',
@@ -19,6 +33,22 @@ export const useUserStore = defineStore('userStore', () => {
     annualInspection: null,
     technicalInspection: null
   }])
+
+  const submitUserForm = async (userData: any) => {
+    await handleSubmit(async (values) => {
+      try {
+        return await userData.updateUser({
+          uid: userData.uid,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          phone: values.phone,
+          cars: userData.cars
+        })
+      } catch (error) {
+        console.error('Error al enviar el formulario', error)
+      }
+    })()
+  }
 
   function addCar() {
     cars.push({
@@ -142,5 +172,24 @@ export const useUserStore = defineStore('userStore', () => {
     }
   }
 
-  return { id, uid, firstName, lastName, phone, cars, setUser, getUserByUid, createUser, updateUser, resetUser, addCar, removeCar }
+  return {
+    id,
+    uid,
+    errors,
+    firstName,
+    firstNameProps,
+    lastName,
+    lastNameProps,
+    phone,
+    phoneProps,
+    submitUserForm,
+    cars,
+    setUser,
+    getUserByUid,
+    createUser,
+    updateUser,
+    resetUser,
+    addCar,
+    removeCar
+  }
 })

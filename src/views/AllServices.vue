@@ -58,9 +58,9 @@ const services = ref([
 <template>
   <Layout>
     <div class="md:container md:mx-auto bg-white pt-5">
-      <h1 class="text-2xl text-left pl-5 text-blue-900 font-black mb-4">SERVICIOS PARA AUTOMÓVILES A DOMICILIO</h1>
+      <h1 class="text-2xl text-left px-5 text-blue-900 font-black mb-4">SERVICIOS PARA AUTOMÓVILES A DOMICILIO</h1>
 
-      <p class="text-left pl-5 text-blue-900 font-normal mb-6">Lista de servicios de mantenimiento y reparación de automóviles <strong>disponibles a domicilio</strong>.</p>
+      <p class="text-left px-5 text-blue-900 font-normal mb-6">Lista de servicios de mantenimiento y reparación de automóviles <strong>disponibles a domicilio</strong>.</p>
 
       <div class="flex flex-row flex-wrap justify-evenly items-center">
         <div v-for="service in services" :key="service.name" class="w-[21rem] h-[25rem] mb-6 p-2 mr-1 bg-green-100 flex flex-col justify-center items-center rounded-lg shadow-xl">

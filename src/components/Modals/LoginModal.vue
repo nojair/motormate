@@ -6,16 +6,22 @@ import { ref } from 'vue'
 import { auth } from '@/firebase'
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 
-import { useLoginModalStore } from '@/stores/modal'
+import { useLoginModalStore, useRegisterModalStore } from '@/stores/modal'
 import { useUserStore } from '@/stores/user'
 import { useAuthStore } from '@/stores/auth'
 
 const loginModalStore = useLoginModalStore()
+const registerModalStore = useRegisterModalStore()
 const userStore = useUserStore()
 const authStore = useAuthStore()
 
 const email = ref('')
 const password = ref('')
+
+function goToRegisterView() {
+  loginModalStore.setShowModal(false)
+  registerModalStore.setShowModal(true)
+}
 
 const signInWithGoogle = async () => {
   try {
@@ -45,6 +51,10 @@ const signInWithEmail = async () => {
   <Modal v-if="loginModalStore.showModal" @closeModal="loginModalStore.setShowModal(false)" :width="'w-3/4'" :height="'h-3/4'">
     <Loading v-if="loginModalStore.isLoading" />
     <div class="w-full flex flex-col justify-center items-center" v-else>
+      <span class="text-sm flex flex-row justify-center items-center mb-10">
+        <p class="cursor-default mr-1">¿No tienes una cuenta?</p>
+        <p class="cursor-pointer text-blue-900 font-semibold" @click="goToRegisterView">Registrate gratis</p>
+      </span>
       <form @submit.prevent="signInWithEmail" class="rounded-md w-full sm:w-2/5 flex flex-col justify-center items-center">
         <div class="flex flex-col rounded-md w-full">
           <label for="email" class="text-blue-900 font-semibold text-xs mb-1">Correo electrónico</label>
