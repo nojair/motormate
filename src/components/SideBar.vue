@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useUserStore } from '@/stores/user'
+import { useRouter } from 'vue-router'
 
 const showHamburguer = ref(false)
 const userStore = useUserStore()
+const router = useRouter()
 
 function handleToggleHamburguer () {
   showHamburguer.value = !showHamburguer.value
+}
+
+function isTheSectionName(sectionName: string) {
+  return Object.is(router.currentRoute.value.name, sectionName) 
 }
 </script>
 
@@ -21,9 +27,9 @@ function handleToggleHamburguer () {
       </svg>
     </div>
     <div :class="{ 'flex top-[1.5rem]': showHamburguer, 'hidden sm:flex top-[5.5rem]': !showHamburguer }" class="flex-col justify-start items-center h-full w-44 bg-blue-900 drop-shadow-xl fixed bottom-0">
-      <router-link :to="{ name: 'AllServices' }" class="font-medium text-sky-100 hover:text-sky-900 bg-blue-900 hover:bg-blue-100 drop-shadow-xl py-1 mb-1 w-full text-left pl-3">Todos los servicios</router-link>
-      <router-link :to="{ name: 'CarWashServices' }" class="font-medium text-sky-100 hover:text-sky-900 bg-blue-900 hover:bg-blue-100 drop-shadow-xl py-1 mb-1 w-full text-left pl-3">Todo Lavado</router-link>
-      <router-link v-if="userStore.uid" :to="{ name: 'Profile' }" class="font-medium text-sky-100 hover:text-sky-900 bg-blue-900 hover:bg-blue-100 drop-shadow-xl py-1 mb-1 w-full text-left pl-3">Mi perfil</router-link>
+      <router-link :class="{ 'text-sky-900 bg-blue-100': isTheSectionName('AllServices'), 'text-sky-100 bg-blue-900': !isTheSectionName('AllServices') }" :to="{ name: 'AllServices' }" class="font-medium text-sky-100 hover:text-sky-900 hover:bg-blue-100 drop-shadow-xl py-1 mb-1 w-full text-left pl-3">Todos los servicios</router-link>
+      <router-link :class="{ 'text-sky-900 bg-blue-100': isTheSectionName('CarWashServices'), 'text-sky-100 bg-blue-900': !isTheSectionName('CarWashServices') }" :to="{ name: 'CarWashServices' }" class="font-medium text-sky-100 hover:text-sky-900 hover:bg-blue-100 drop-shadow-xl py-1 mb-1 w-full text-left pl-3">Todo Lavado</router-link>
+      <router-link :class="{ 'text-sky-900 bg-blue-100': isTheSectionName('Profile'), 'text-sky-100 bg-blue-900': !isTheSectionName('Profile') }" v-if="userStore.uid" :to="{ name: 'Profile' }" class="font-medium hover:text-sky-900 hover:bg-blue-100 drop-shadow-xl py-1 mb-1 w-full text-left pl-3">Mi perfil</router-link>
     </div>
   </div>
 </template>

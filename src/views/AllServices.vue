@@ -12,7 +12,7 @@ const services = ref([
   {
     name: 'Lavado',
     imageSrc: SprayPNG,
-    description: '<span>Servicio de lavado <span class="text-orange-600 font-black text-lg not-italic">A DOMICILIO</span> y talleres cerca de ti.</span>',
+    description: '<span>Encuentra talleres cerca de ti.</span>',
     CTAtext: 'VER TALLERES',
     isCarWash: true
   },
@@ -32,7 +32,7 @@ const services = ref([
     name: 'Cambio de Aceite',
     imageSrc: OilPNG,
     description: '<span>Cambio de aceite y filtro para garantizar un motor saludable.</span>',
-    price: 'S/30 (Incluye filtro)',
+    price: 'Desde S/30 (Incluye filtro)',
     CTAtext: 'CONTACTAR',
     isCarWash: false
   },
@@ -73,7 +73,7 @@ const services = ref([
             class="hover:opacity-80 mb-3 p-1 w-[15rem] rounded-md text-center text-white text-xl font-bold bg-orange-600"
           >{{ service.CTAtext }}</router-link>
           <button v-else class="flex flex-row justify-center items-center mb-3 p-1 w-[15rem] rounded-md bg-blue-600 hover:opacity-80">
-            <p class="text-center text-white text-xl font-bold">{{ service.CTAtext }}</p>
+            <a target="_blank" class="text-center text-white text-xl font-bold" href="https://api.whatsapp.com/send?phone=906841366">{{ service.CTAtext }}</a>
             <img :src="WhatsappPNG" alt="whatsapp" class="ml-4 h-6">
           </button>
         </div>

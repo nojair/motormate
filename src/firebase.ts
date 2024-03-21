@@ -4,17 +4,17 @@ import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDyp1H4_IoRX2Z6AbXFtqUmKJlpkCu91HY",
-  authDomain: "motormate-cd4a6.firebaseapp.com",
-  projectId: "motormate-cd4a6",
-  storageBucket: "motormate-cd4a6.appspot.com",
-  messagingSenderId: "34392934813",
-  appId: "1:34392934813:web:29660022bf0a9ffec14774"
+  apiKey: "AIzaSyD7n8E7b0wtFEwSBS8oa5wVwshLXkOyvNY",
+  authDomain: "todoautos.firebaseapp.com",
+  projectId: "todoautos",
+  storageBucket: "todoautos.appspot.com",
+  messagingSenderId: "627443339943",
+  appId: "1:627443339943:web:113de9723a94056e54c182",
+  measurementId: "G-TXE1ZH392N"
 }
 
 const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)
 const db = getFirestore(app)
-const storage = getStorage(app)
 
-export { auth, db, storage }
+export { auth, db }

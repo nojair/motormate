@@ -32,7 +32,7 @@ function submitFormData() {
     <div class="md:container md:mx-auto pt-5 mb-11">
       <h1 class="text-left pl-5 text-2xl text-blue-900 font-black mb-4">CONFIGURACIÓN</h1>
 
-      <p class="text-left pl-5 text-blue-900 font-normal mb-6">Llena tus datos y activa notificaciones.</p>
+      <p class="text-left pl-5 text-blue-900 font-normal mb-6">Administra tus datos personales y de tus autos.</p>
 
       <form class="mb-4 rounded-md w-11/12 mx-5 p-5 flex flex-col justify-center items-start bg-blue-100">
         <h2 class="text-lg text-left text-blue-900 font-bold mb-6">Información de contacto</h2>

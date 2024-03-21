@@ -31,7 +31,7 @@ async function logout() {
 <template>
   <div class="flex sm:flex-row flex-col justify-between items-center bg-blue-900 w-full px-4 py-4 drop-shadow-xl sticky">
     <div class="flex flex-row justify-start items-center sm:mb-0 mb-5">
-      <p class="cursor-default text-sky-100 border-sky-100 text-4xl font-bold border-4 px-1 hidden sm:block">MOTORMATE</p>
+      <p class="cursor-default text-sky-100 border-sky-100 text-4xl font-bold border-4 px-1 hidden sm:block">TODOAUTOS</p>
       <div class="flex flex-col justify-center items-center sm:mx-7">
         <span class="cursor-default flex flex-row px-2 rounded-sm">
           <p class="text-sky-300 font-bold">Ubicación</p>

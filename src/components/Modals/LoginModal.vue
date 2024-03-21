@@ -17,6 +17,7 @@ const authStore = useAuthStore()
 
 const email = ref('')
 const password = ref('')
+const isThereError = ref(false)
 
 function goToRegisterView() {
   loginModalStore.setShowModal(false)
@@ -25,15 +26,18 @@ function goToRegisterView() {
 
 const signInWithGoogle = async () => {
   try {
+    isThereError.value = false
     const provider = new GoogleAuthProvider()
     await signInWithPopup(auth, provider)
   } catch (error) {
+    isThereError.value = true
     console.error('Error al iniciar sesión con Google:', error)
   }
 }
 
 const signInWithEmail = async () => {
   try {
+    isThereError.value = false
     loginModalStore.setIsLoading(true)
     await signInWithEmailAndPassword(auth, email.value, password.value)
       .then(async () => {
@@ -42,6 +46,8 @@ const signInWithEmail = async () => {
         loginModalStore.setShowModal(false)
       })
   } catch (error) {
+    isThereError.value = true
+    loginModalStore.setIsLoading(false)
     console.error('Error al iniciar sesión con correo y contraseña:', error)
   }
 }
@@ -51,7 +57,10 @@ const signInWithEmail = async () => {
   <Modal v-if="loginModalStore.showModal" @closeModal="loginModalStore.setShowModal(false)" :width="'w-3/4'" :height="'h-3/4'">
     <Loading v-if="loginModalStore.isLoading" />
     <div class="w-full flex flex-col justify-center items-center" v-else>
-      <span class="text-sm flex flex-row justify-center items-center mb-10">
+      <span v-if="isThereError" class="text-sm flex flex-row justify-center items-center mb-10">
+        <p class="cursor-default mr-1">El correo o la contraseña son incorrectos</p>
+      </span>
+      <span v-else class="text-sm flex flex-row justify-center items-center mb-10">
         <p class="cursor-default mr-1">¿No tienes una cuenta?</p>
         <p class="cursor-pointer text-blue-900 font-semibold" @click="goToRegisterView">Registrate gratis</p>
       </span>

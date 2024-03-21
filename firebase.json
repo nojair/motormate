@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "motormate",
+    "site": "todoautos",
     "public": "dist",
     "ignore": [
       "firebase.json",
