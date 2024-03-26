@@ -14,7 +14,7 @@ const validationSchema = toTypedSchema(
   }
 ))
 
-export const useUserStore = defineStore('userStore', () => {
+export const useUserStore = defineStore('user', () => {
   const { errors, defineField, handleSubmit } = useForm({ validationSchema })
 
   const [firstName, firstNameProps] = defineField('firstName')
@@ -23,6 +23,14 @@ export const useUserStore = defineStore('userStore', () => {
 
   const id = ref('')
   const uid = ref('')
+  const location = reactive({
+    latitude: '',
+    longitude: '',
+    country: '',
+    department: '',
+    city: '',
+    address: ''
+  })
   const cars = reactive([{
     brand: '',
     model: '',
@@ -35,7 +43,7 @@ export const useUserStore = defineStore('userStore', () => {
   }])
 
   const submitUserForm = async (userData: any) => {
-    await handleSubmit(async (values) => {
+    await handleSubmit(async (values: any) => {
       try {
         return await userData.updateUser({
           uid: userData.uid,
@@ -176,6 +184,7 @@ export const useUserStore = defineStore('userStore', () => {
     id,
     uid,
     errors,
+    location,
     firstName,
     firstNameProps,
     lastName,

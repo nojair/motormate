@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Modal from '@/components/Modal.vue'
 
-import { useAlertStore } from '@/stores/modal'
+import { useAlertStore } from '@/stores/alert'
 
 const alertStore = useAlertStore()
 </script>

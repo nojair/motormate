@@ -2,18 +2,18 @@
 
 import TopBar from '@/components/TopBar.vue'
 import SideBar from '@/components/SideBar.vue'
-import GoogleMapsModal from '@/components/Modals/GoogleMapsModal.vue'
 import LoginModal from '@/components/Modals/LoginModal.vue'
 import RegisterModal from '@/components/Modals/RegisterModal.vue'
+import LocationModal from '@/components/Modals/LocationModal.vue'
 import Alert from '@/components/Alert.vue'
 import Footer from '@/components/Footer.vue'
 </script>
 
 <template>
   <div class="flex flex-col w-full h-screen overflow-hidden">
-    <GoogleMapsModal />
     <LoginModal />
     <RegisterModal />
+    <LocationModal />
     <Alert />
     <TopBar />
     <div class="flex flex-row w-full h-full overflow-y-auto">

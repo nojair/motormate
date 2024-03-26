@@ -29,6 +29,11 @@ const signInWithGoogle = async () => {
     isThereError.value = false
     const provider = new GoogleAuthProvider()
     await signInWithPopup(auth, provider)
+      .then(async () => {
+        await userStore.getUserByUid(authStore?.uid)
+        loginModalStore.setIsLoading(false)
+        loginModalStore.setShowModal(false)
+      })
   } catch (error) {
     isThereError.value = true
     console.error('Error al iniciar sesión con Google:', error)
@@ -58,7 +63,7 @@ const signInWithEmail = async () => {
     <Loading v-if="loginModalStore.isLoading" />
     <div class="w-full flex flex-col justify-center items-center" v-else>
       <span v-if="isThereError" class="text-sm flex flex-row justify-center items-center mb-10">
-        <p class="cursor-default mr-1">El correo o la contraseña son incorrectos</p>
+        <p class="rounded-xs font-semibold px-4 py-1 bg-red-100 text-red-800 cursor-default mr-1">El correo o la contraseña son incorrectos</p>
       </span>
       <span v-else class="text-sm flex flex-row justify-center items-center mb-10">
         <p class="cursor-default mr-1">¿No tienes una cuenta?</p>
@@ -67,7 +72,7 @@ const signInWithEmail = async () => {
       <form @submit.prevent="signInWithEmail" class="rounded-md w-full sm:w-2/5 flex flex-col justify-center items-center">
         <div class="flex flex-col rounded-md w-full">
           <label for="email" class="text-blue-900 font-semibold text-xs mb-1">Correo electrónico</label>
-          <input class="h-8 mb-2 pl-2 bg-blue-100 rounded-md"style="outline: none;" type="email" id="email" v-model="email" required>
+          <input class="h-8 mb-2 pl-2 bg-blue-100 rounded-md" style="outline: none;" type="email" id="email" v-model="email" required>
         </div>
         <div class="flex flex-col w-full">
           <label for="password" class="text-blue-900 font-semibold text-xs">Contraseña</label>

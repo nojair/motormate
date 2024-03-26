@@ -1,6 +1,27 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 
+let userLocation = <any>null
+
+async function getUserGeolocation() {
+  if (navigator.geolocation) {
+    await new Promise((resolve: any, reject: any) => {
+      navigator.geolocation.getCurrentPosition((position) => {
+        userLocation = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        }
+        resolve()
+      }, (error) => {
+        console.error('Error al obtener la ubicación del usuario:', error)
+        reject()
+      })
+    })
+  } else {
+    console.error('Geolocalización no es compatible con este navegador.')
+  }
+}
+
 function callback(results: any, status: any) {
   // @ts-ignore
   if (status === google.maps.places.PlacesServiceStatus.OK) {
@@ -15,8 +36,9 @@ function callback(results: any, status: any) {
 let map = null
 
 async function initMap(): Promise<void> {
-  // The location of Uluru
-  const position = { lat: -8.1169477, lng: -79.021662 };
+  await getUserGeolocation()
+  console.log('userLocation', userLocation)
+  const position = userLocation || { lat: -8.1169477, lng: -79.021662 };
   
   // @ts-ignore
   const { Map } = await google.maps.importLibrary("maps") as google.maps.MapsLibrary;

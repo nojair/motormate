@@ -3,27 +3,29 @@ import Layout from '@/components/Layout.vue'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
-import { useAlertStore } from '@/stores/modal'
+import { useAlertStore } from '@/stores/alert'
 import { useAuthStore } from '@/stores/auth'
 
 const authStore = useAuthStore()
 
 const isTouched = ref(false)
 const userStore = useUserStore()
-const alertStore = useAlertStore()
+//const alertStore = useAlertStore()
 const router = useRouter()
 
 onMounted(() => {
-  userStore.uid ? null : (router.push({ name: 'Home' }))
+  authStore.isAuthenticated ? null : (router.push({ name: 'Home' }))
 })
 
 function submitFormData() {
-  authStore.setIsLoading(true)
+  //authStore.setIsLoading(true)
   isTouched.value ? null : isTouched.value = true
+  /*
   userStore.submitUserForm(userStore).then(() => {
     authStore.setIsLoading(false)
     alertStore.setShowAlert(true)
   })
+  */
 }
 </script>
 

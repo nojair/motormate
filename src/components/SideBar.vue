@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useUserStore } from '@/stores/user'
+import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
 
 const showHamburguer = ref(false)
-const userStore = useUserStore()
+const authStore = useAuthStore()
 const router = useRouter()
 
 function handleToggleHamburguer () {
@@ -29,7 +29,7 @@ function isTheSectionName(sectionName: string) {
     <div :class="{ 'flex top-[1.5rem]': showHamburguer, 'hidden sm:flex top-[5.5rem]': !showHamburguer }" class="flex-col justify-start items-center h-full w-44 bg-blue-900 drop-shadow-xl fixed bottom-0">
       <router-link :class="{ 'text-sky-900 bg-blue-100': isTheSectionName('AllServices'), 'text-sky-100 bg-blue-900': !isTheSectionName('AllServices') }" :to="{ name: 'AllServices' }" class="font-medium text-sky-100 hover:text-sky-900 hover:bg-blue-100 drop-shadow-xl py-1 mb-1 w-full text-left pl-3">Todos los servicios</router-link>
       <router-link :class="{ 'text-sky-900 bg-blue-100': isTheSectionName('CarWashServices'), 'text-sky-100 bg-blue-900': !isTheSectionName('CarWashServices') }" :to="{ name: 'CarWashServices' }" class="font-medium text-sky-100 hover:text-sky-900 hover:bg-blue-100 drop-shadow-xl py-1 mb-1 w-full text-left pl-3">Todo Lavado</router-link>
-      <router-link :class="{ 'text-sky-900 bg-blue-100': isTheSectionName('Profile'), 'text-sky-100 bg-blue-900': !isTheSectionName('Profile') }" v-if="userStore.uid" :to="{ name: 'Profile' }" class="font-medium hover:text-sky-900 hover:bg-blue-100 drop-shadow-xl py-1 mb-1 w-full text-left pl-3">Mi perfil</router-link>
+      <router-link :class="{ 'text-sky-900 bg-blue-100': isTheSectionName('Profile'), 'text-sky-100 bg-blue-900': !isTheSectionName('Profile') }" v-if="authStore.isAuthenticated" :to="{ name: 'Profile' }" class="font-medium hover:text-sky-900 hover:bg-blue-100 drop-shadow-xl py-1 mb-1 w-full text-left pl-3">Mi perfil</router-link>
     </div>
   </div>
 </template>

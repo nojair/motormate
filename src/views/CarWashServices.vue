@@ -1,48 +1,5 @@
 <script setup lang="ts">
 import Layout from '@/components/Layout.vue'
-/*
-import { ref } from 'vue'
-import { useGoogleMapsModalStore } from '@/stores/modal'
-import WhatsappPNG from '@/assets/icons/whatsapp.png'
-
-import Location from '@/assets/icons/location.svg'
-
-const { handleShowGoogleMapsModal } = useGoogleMapsModalStore()
-
-const carWashWorkshops = ref([
-  {
-    key: 1,
-    organization: 'BRUCCE SAC',
-    description: '<span>Lavado de autos a DOMICILIO</span>',
-    price: {
-      exteriorWash: 's/20',
-      exteriorAndInteriorWash: 's/35',
-      completeWash: 's/50'
-    },
-    email: 'irvin.jair.pg@gmail.com',
-    phone: '+51 943800214',
-    whatsapp: '+51 943800214',
-    schedules: {
-      fromMondayToFriday: '8am - 6pm',
-      saturday: '9am - 4pm',
-      sundayOrHolidays: '-'
-    },
-    location: {
-      country: 'PER',
-      region: 'La Libertad',
-      city: 'Trujillo',
-      address: 'online',
-      placeId: 'ChIJW3gamX89rZERq1EIvzdk53E'
-    },
-    isOnline: true
-  }
-])
-
-function goToWhatsapp(workshop:any): String {
-  return workshop.whatsapp
-}
-*/
-
 import CarWashMap from '@/components/CarWashMap.vue'
 </script>
 

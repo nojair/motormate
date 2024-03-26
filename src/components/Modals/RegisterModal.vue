@@ -7,6 +7,7 @@ import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } f
 import { auth } from '@/firebase'
 import { useRegisterModalStore, useLoginModalStore } from '@/stores/modal'
 import { useUserStore } from '@/stores/user'
+import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -14,6 +15,7 @@ const router = useRouter()
 const registerModalStore = useRegisterModalStore()
 const loginModalStore = useLoginModalStore()
 const userStore = useUserStore()
+const authStore = useAuthStore()
 
 const email = ref('')
 const password = ref('')
@@ -27,7 +29,7 @@ const registerUser = async () => {
   try {
     registerModalStore.setShowModal(true)
     await createUserWithEmailAndPassword(auth, email.value, password.value)
-      .then(async ({ user: { uid } }) => {
+      .then(async ({ user: { uid } }: { user: { uid: string }}) => {
         await userStore.createUser(uid).then(() => {
           registerModalStore.setShowModal(false)
           router.push({ name: 'Profile' })
@@ -43,7 +45,11 @@ const signInWithGoogle = async () => {
   try {
     const provider = new GoogleAuthProvider()
     await signInWithPopup(auth, provider)
-    // Usuario inició sesión correctamente con Google
+      .then(async () => {
+        await userStore.getUserByUid(authStore?.uid)
+        loginModalStore.setIsLoading(false)
+        loginModalStore.setShowModal(false)
+      })
   } catch (error) {
     console.error('Error al iniciar sesión con Google:', error)
   }
