@@ -23,13 +23,19 @@ export const useUserStore = defineStore('user', () => {
 
   const id = ref('')
   const uid = ref('')
-  const location = reactive({
+  const coordinates = reactive({
     latitude: '',
-    longitude: '',
+    longitude: ''
+  })
+  const location = reactive({
     country: '',
-    department: '',
-    city: '',
-    address: ''
+    administrative_area_level_1: '',
+    administrative_area_level_2: '',
+    locality: '',
+    sublocality: '',
+    route: '',
+    street_number: '',
+    postal_code: ''
   })
   const cars = reactive([{
     brand: '',
@@ -41,6 +47,38 @@ export const useUserStore = defineStore('user', () => {
     annualInspection: null,
     technicalInspection: null
   }])
+
+  const setUserLocation = (userLocation: {
+    country: string,
+    administrative_area_level_1: string,
+    administrative_area_level_2: string,
+    locality: string,
+    sublocality: string,
+    route: string,
+    street_number: string,
+    postal_code: string
+  }) => {
+    Object.assign(location, {
+      country: userLocation.country || '',
+      administrative_area_level_1: userLocation.administrative_area_level_1 || '',
+      administrative_area_level_2: userLocation.administrative_area_level_2 || '',
+      locality: userLocation.locality || '',
+      sublocality: userLocation.sublocality || '',
+      route: userLocation.route || '',
+      street_number: userLocation.street_number || '',
+      postal_code: userLocation.postal_code || ''
+    })
+  }
+
+  const setUserCoordinates = (userCoordinates: {
+    latitude: number,
+    longitude: number
+  }) => {
+    Object.assign(coordinates, {
+      latitude: userCoordinates.latitude || '',
+      longitude: userCoordinates.longitude || ''
+    })
+  }
 
   const submitUserForm = async (userData: any) => {
     await handleSubmit(async (values: any) => {
@@ -184,7 +222,6 @@ export const useUserStore = defineStore('user', () => {
     id,
     uid,
     errors,
-    location,
     firstName,
     firstNameProps,
     lastName,
@@ -199,6 +236,10 @@ export const useUserStore = defineStore('user', () => {
     updateUser,
     resetUser,
     addCar,
-    removeCar
+    removeCar,
+    location,
+    setUserLocation,
+    coordinates,
+    setUserCoordinates
   }
 })
