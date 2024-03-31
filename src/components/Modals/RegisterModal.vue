@@ -1,14 +1,16 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
 import Loading from '@/components/Loading.vue'
 import Modal from '@/components/Modal.vue'
 
-import { ref } from 'vue'
 import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 import { auth } from '@/firebase'
+
 import { useRegisterModalStore, useLoginModalStore } from '@/stores/modal'
 import { useUserStore } from '@/stores/user'
 import { useAuthStore } from '@/stores/auth'
-import { useRouter } from 'vue-router'
 
 const router = useRouter()
 

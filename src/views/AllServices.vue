@@ -1,12 +1,20 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
+import { useRouter } from 'vue-router'
+
 import Layout from '@/components/Layout.vue'
+
 import AdjustableSpannerPNG from '@/assets/icons/adjustable-wrench.png'
 import FanPNG from '@/assets/icons/fan.png'
 import BrakesPNG from '@/assets/icons/brakes.png'
 import OilPNG from '@/assets/icons/oil.png'
 import SprayPNG from '@/assets/icons/spray.png'
 import WhatsappPNG from '@/assets/icons/whatsapp.png'
+
+import { useUserStore } from '@/stores/user'
+
+const router = useRouter()
+const userStore = useUserStore()
 
 const services = ref([
   {
@@ -53,6 +61,12 @@ const services = ref([
     isCarWash: false
   }
 ])
+
+watchEffect(() => {
+  if (userStore.location.administrative_area_level_2 && userStore.location.administrative_area_level_2 != 'Trujillo') {
+    router.push({ name: 'CarWashServices' })
+  }
+})
 </script>
 
 <template>

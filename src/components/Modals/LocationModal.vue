@@ -25,7 +25,7 @@ function getHintOptions() {
       // @ts-ignore
       const { AutocompleteService } = await google.maps.importLibrary("places") as google.maps.AutocompleteService
       hintOptions.value = await new AutocompleteService().getPlacePredictions({ input: locationSearchTerm.value })
-    }, 300)
+    }, 200)
   } catch (error) {
     console.log('error', error)
   }
@@ -50,7 +50,6 @@ async function geocodeByPlaceId(place_id: string) {
       }
       
       results[0].address_components.map((address_component: any) => {
-        console.log('address_component', address_component)
         if (address_component.types.includes('country')) {
           address_components.country = address_component.long_name
         } else if (address_component.types.includes('administrative_area_level_1')) {
@@ -91,7 +90,7 @@ function selectHintOption(option: any) {
       <span class="w-full h-full mt-10 px-10 flex flex-col justify-start items-center">
         <label for="autocomplete-input" class="mb-3">Es necesario ingresar una dirección</label>
         <input v-model="locationSearchTerm" @input="getHintOptions" class="pl-2 w-full h-10 bg-blue-100 rounded-xs" style="outline: none;" type="text" id="autocomplete-input" name="autocomplete-input">
-        <ul v-if="!selectedHintOption.place_id" class="w-full bg-blue-50 rounded-xs">
+        <ul v-if="locationSearchTerm && !selectedHintOption.place_id" class="w-full bg-blue-50 rounded-xs">
           <li v-for="(hintOption, index) in hintOptions.predictions" :key="index"
             class="cursor-pointer text-sm hover:bg-blue-300 hover:font-medium"
             @click="selectHintOption(hintOption)"
