@@ -129,6 +129,77 @@ async function initMap(): Promise<void> {
       }
     }
   })
+
+  map.addListener('bounds_changed', async function() {
+  // Obtener los límites actuales de la vista del mapa
+  const bounds = map.getBounds();
+
+  // Realizar una solicitud de lugares dentro de los límites actuales
+  await service.nearbySearch({
+    radius: 5000,
+    bounds: bounds,
+    location: pyrmont,
+    type: 'car_wash' // Tipo de lugar que quieres buscar
+  }, async (results: any, status: any) => {
+  // @ts-ignore
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      for (var i = 0; i < results.length; i++) {
+        var place = results[i]
+
+        const faPinView = await new PinView({
+            glyphColor: '#811411',
+            background: '#e94335',
+            borderColor: '#811411',
+        })
+
+        const faPinViewTwo = new PinView({
+            glyphColor: '#811411',
+            background: '#e94335',
+            borderColor: '#811411',
+            scale: 1.2
+        })
+
+        const marker = await new AdvancedMarkerView({
+          map: map,
+          position: place.geometry.location,
+          content: faPinView.element,
+          zIndex: i
+        })
+
+        //const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${place.geometry.location.lat},${place.geometry.location.lng}`;
+
+        // @ts-ignore
+        const infowindow = new google.maps.InfoWindow({
+          content: `<ul class="py-2">
+            <li class="flex flex-row items-center"><p class="mb-2"><span class="font-semibold">Taller:</span> ${place.name || ''} <span class="font-semibold">(${calcularDistancia(position.lat, position.lng, place.geometry.location.lat(), place.geometry.location.lng())} Km)</span></p></li>
+            <li class="flex flex-row items-center">${place.business_status ? '<p class="mb-2"><span class="font-semibold">Estado:</span> Operacional</p>' : ''}</li>
+            <li class="flex flex-row items-center">${place.isOpen ? '<p class="mb-2 font-semibold">Abierto ahora</p>' : ''}</li>
+            <li class="flex flex-row items-center">${place.vicinity ? `<p class="mb-2"><span class="font-semibold">Dirección: </span>${place.vicinity}</p>` : ''}</li>
+            <li class="flex flex-row items-center">${place.user_ratings_total ? `<p class="mb-2"><span class="font-semibold">Rating: </span>⭐ ${place.rating} (${place.user_ratings_total})</p>` : ''}</li>
+            <li class="mt-2"><a class="text-sm text-blue-600 font-black rounded-md py-1" href="https://www.google.com/maps/dir/?api=1&destination=${place.geometry.location.lat},${place.geometry.location.lng}" target="_blank" rel="noopener noreferrer">Abrir en Google Maps</a></li>
+          </ul>`
+        })
+
+        marker.addListener('gmp-click', () => {
+          if (selectedMarker?.zIndex != marker.zIndex) {
+            if (selectedMarker) selectedMarker.content = faPinView.element
+            marker.content = faPinViewTwo.element
+            selectedMarker = marker
+              
+            infoWindows.forEach((infoWindow: any) => infoWindow.close())
+            infowindow.open({
+              anchor: marker,
+              map
+            })
+            
+            infoWindows.push(infowindow)
+          }
+        })
+
+      }
+    }
+  });
+});
 }
 
 watchEffect(async () => {
