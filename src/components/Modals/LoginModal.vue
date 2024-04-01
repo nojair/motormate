@@ -63,7 +63,7 @@ const submitFormData = loginModalStore.handleSubmit((values) => {
 </script>
 
 <template>
-  <Modal v-if="loginModalStore.showModal" @closeModal="loginModalStore.setShowModal(false)" :width="'w-3/4'" :height="'h-3/4'" :showCloseIcon="false">
+  <Modal v-if="loginModalStore.showModal" @closeModal="loginModalStore.setShowModal(false)" :width="'w-3/4'" :height="'h-3/4'" :showCloseIcon="true">
     <Loading v-if="loginModalStore.isLoading" />
     <div class="w-full flex flex-col justify-center items-center" v-else>
       <span v-if="isThereError" class="text-sm flex flex-row justify-center items-center mb-10">
@@ -71,15 +71,17 @@ const submitFormData = loginModalStore.handleSubmit((values) => {
       </span>
       <span v-else class="text-sm flex flex-row justify-center items-center mb-10">
         <p class="cursor-default mr-1">¿No tienes una cuenta?</p>
-        <p class="cursor-pointer text-blue-900 font-semibold" @click="goToRegisterView">Registrate gratis</p>
+        <p class="cursor-pointer bg-white font-semibold" @click="goToRegisterView">Registrate gratis</p>
       </span>
       <form @submit.prevent="submitFormData" class="rounded-md w-full sm:w-2/5 flex flex-col justify-center items-center">
         <div class="flex flex-col rounded-md w-full">
-          <label for="email" class="text-blue-900 font-semibold text-xs mb-1" :class="{ 'text-xs text-red-700 font-medium pl-2': loginModalStore.meta.touched && loginModalStore.errors && loginModalStore.errors.email }">Correo electrónico</label>
-          <input :class="{ 'border-red-400 border-2 rounded-xs': loginModalStore.meta.touched && loginModalStore.errors && loginModalStore.errors.email }" class="h-8 mb-2 pl-2 bg-blue-100 rounded-md" style="outline: none;" type="email" id="email" v-model="loginModalStore.email" v-bind="loginModalStore.emailProps">
+          <label for="email" class="bg-white font-semibold text-xs mb-1" :class="{ 'text-xs text-red-700 font-medium pl-2': loginModalStore.meta.touched && loginModalStore.errors && loginModalStore.errors.email }">Correo electrónico</label>
+          <input
+            :class="{ 'border-red-400 border-2 rounded-xs': loginModalStore.meta.touched && loginModalStore.errors && loginModalStore.errors.email }"
+            class="h-8 mb-2 pl-2 bg-blue-100 rounded-md" style="outline: none;" type="email" id="email" v-model="loginModalStore.email" v-bind="loginModalStore.emailProps">
         </div>
         <div class="flex flex-col w-full">
-          <label for="password" class="text-blue-900 font-semibold text-xs mb-1" :class="{ 'text-xs text-red-700 font-medium pl-2': loginModalStore.meta.touched && loginModalStore.errors && loginModalStore.errors.password }">Contraseña</label>
+          <label for="password" class="bg-white font-semibold text-xs mb-1" :class="{ 'text-xs text-red-700 font-medium pl-2': loginModalStore.meta.touched && loginModalStore.errors && loginModalStore.errors.password }">Contraseña</label>
           <input
             :class="{ 'border-red-400 border-2 rounded-xs': loginModalStore.meta.touched && loginModalStore.errors && loginModalStore.errors.password }"
             class="h-8 mb-2 pl-2 bg-blue-100 rounded-md" style="outline: none;" type="password" id="password" v-model="loginModalStore.password" v-bind="loginModalStore.passwordProps" placeholder="Mínimo 6 carácteres">

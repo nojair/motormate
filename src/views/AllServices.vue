@@ -18,7 +18,7 @@ const userStore = useUserStore()
 
 const services = ref([
   {
-    name: 'Lavado',
+    name: 'LAVADO',
     imageSrc: SprayPNG,
     description: '<span>Encuentra talleres cerca de ti.</span>',
     CTAtext: 'VER TALLERES',
@@ -72,22 +72,22 @@ watchEffect(() => {
 <template>
   <Layout>
     <div class="md:container md:mx-auto bg-white pt-5">
-      <h1 class="text-2xl text-left px-5 text-blue-900 font-black mb-4">SERVICIOS PARA AUTOMÓVILES A DOMICILIO</h1>
+      <h1 class="text-2xl text-left px-5 bg-white text-blue-700 font-black mb-4">SERVICIOS PARA AUTOMÓVILES A DOMICILIO</h1>
 
-      <p class="text-left px-5 text-blue-900 font-normal mb-6">Lista de servicios de mantenimiento y reparación de automóviles <strong>disponibles a domicilio</strong>.</p>
+      <p class="text-left px-5 bg-white font-normal mb-6">Lista de servicios de mantenimiento y reparación de automóviles <strong>disponibles a domicilio</strong>.</p>
 
       <div class="flex flex-row flex-wrap justify-evenly items-center">
-        <div v-for="service in services" :key="service.name" class="w-[21rem] h-[25rem] mb-6 p-2 mr-1 bg-green-100 flex flex-col justify-center items-center rounded-lg shadow-xl">
-          <p class="text-center text-2xl font-black" :class="{ 'text-orange-600': service.isCarWash, 'text-blue-600': !service.isCarWash }">{{ service.name }}</p>
-          <p v-if="service.price" class="text-center text-base text-orange-600 py-0 font-black w-ful">{{ service.price }}</p>
+        <div v-for="service in services" :key="service.name" class="w-[21rem] h-[25rem] mb-6 p-2 mr-1 bg-blue-50 flex flex-col justify-center items-center rounded-lg shadow-xl">
+          <p class="text-center text-2xl font-black" :class="{ 'text-orange-600': service.isCarWash, 'text-blue-700': !service.isCarWash }">{{ service.name }}</p>
+          <p v-if="service.price" class="text-center text-base text-gray-700 py-0 font-black w-ful">{{ service.price }}</p>
           <img :src="service.imageSrc" alt="Car service" class="my-6 h-20 rounded">
-          <p class="px-1 rounded mb-6 w-[19rem] text-center text-blue-600 text-base font-mono bg-white italic font-black" v-html="service.description"></p>
+          <p class="px-1 rounded mb-6 w-[19rem] text-center text-gray-700 text-base font-mono italic font-black" v-html="service.description"></p>
           <router-link v-if="service.isCarWash"
             :to="{ name: 'CarWashServices' }"
             class="hover:opacity-80 mb-3 p-1 w-[15rem] rounded-md text-center text-white text-xl font-bold bg-orange-600"
           >{{ service.CTAtext }}</router-link>
-          <button v-else class="flex flex-row justify-center items-center mb-3 p-1 w-[15rem] rounded-md bg-blue-600 hover:opacity-80">
-            <a target="_blank" class="text-center text-white text-xl font-bold" href="https://api.whatsapp.com/send?phone=906841366">{{ service.CTAtext }}</a>
+          <button v-else class="flex flex-row justify-center items-center mb-3 p-1 w-[15rem] rounded-md bg-white hover:opacity-70 border-2 border-blue-100">
+            <a target="_blank" class="text-center text-blue-600 text-xl font-bold" href="https://api.whatsapp.com/send?phone=906841366">{{ service.CTAtext }}</a>
             <img :src="WhatsappPNG" alt="whatsapp" class="ml-4 h-6">
           </button>
         </div>

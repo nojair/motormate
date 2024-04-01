@@ -8,6 +8,6 @@ const alertStore = useAlertStore()
 
 <template>
   <Modal v-if="alertStore.showAlert" @closeModal="alertStore.setShowAlert(false)" :width="'w-1/4'" :height="'h-40'" :showCloseIcon="true">
-    <p class="text-blue-600 font-medium">¡Los datos se actualizaron con éxito!</p>
+    <p class="text-blue-700 font-medium">¡Los datos se actualizaron con éxito!</p>
   </Modal>
 </template>

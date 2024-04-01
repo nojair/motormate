@@ -31,16 +31,16 @@ async function logout() {
 </script>
 
 <template>
-  <div class="flex sm:flex-row flex-col justify-between items-center bg-blue-900 w-full px-4 py-4 drop-shadow-xl sticky">
+  <div class="flex sm:flex-row flex-col justify-between items-center bg-white w-full px-4 py-4 drop-shadow-xl sticky">
     <div class="flex flex-row justify-start items-center sm:mb-0 mb-5">
-      <p class="cursor-default text-sky-100 border-sky-100 text-4xl font-bold border-4 px-1 hidden sm:block">TODOAUTOS</p>
+      <p class="cursor-default text-blue-700 border-blue-700 text-4xl font-bold border-4 rounded-xl px-1 hidden sm:block">TODOAUTOS</p>
       <div class="flex flex-col justify-center items-center sm:mx-7">
         <span class="cursor-default flex flex-row px-2 rounded-sm">
-          <p class="text-sky-300 font-bold">Ubicación</p>
+          <p class="text-blue-900 font-bold">Ubicación</p>
           <img :src="LocationSVG" alt="LOCATION" class="h-6">
         </span>
         <span class="flex flex-row items-center">
-          <p class="cursor-default w-fit px-4 text-center text-sky-100 font-black py-1">
+          <p class="cursor-default w-fit px-4 text-center text-blue-700 font-black py-1">
             <template v-if="userStore.location.postal_code">
               {{ userStore.location.administrative_area_level_2 }}, {{ userStore.location.administrative_area_level_1 }}
             </template>
@@ -57,17 +57,17 @@ async function logout() {
           <div class="cursor-default bg-white rounded-md h-12 min-w-fit px-2 flex flex-col justify-center items-center" @mouseenter="isOverProfile = true" @mouseleave="isOverProfile = false">
             <div class="flex flex-row justify-between items-center">
               <img :src="ProfilePNG" alt="AVATAR" class="w-8 mr-2">
-              <p class="text-blue-900 font-medium">{{ authStore.displayName || authStore.email || '-' }}</p>
+              <p class="text-blue-700 font-bold">{{ authStore.displayName || authStore.email || '-' }}</p>
             </div>
-            <button v-if="isOverProfile" @click="logout" class="cursor-pointer py-1 font-normal rounded-md border-blue-100 border-2 bg-blue-900 text-blue-100 hover:border-blue-900 hover:bg-blue-100 hover:text-blue-900 w-44 top-[4.3em] absolute flex flex-col justify-between items-center">
+            <button v-if="isOverProfile" @click="logout" class="cursor-pointer py-1 font-normal rounded-md border-blue-100 border-2 hover:bg-blue-100 text-blue-900 hover:border-blue-900 bg-white w-44 top-[4.3em] absolute flex flex-col justify-between items-center">
               <div class="absolute w-0 h-0" style="top: -10px; left: 75px; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 10px solid #1e3a8a;"></div>
               Cerrar sesión
             </button>
           </div>
         </template>
         <template v-else>
-          <button @click="handleShowLoginModal" class="font-semibold w-40 px-5 py-2 rounded-lg border-blue-100 border-2 bg-blue-900 text-blue-100 hover:border-0 hover:bg-blue-100 hover:text-blue-900 mr-3">INGRESAR</button>
-          <button @click="handleShowRegisterModal" class="font-semibold w-40 px-5 py-2 rounded-lg border-blue-100 border-2 bg-blue-900 text-blue-100 hover:border-0 hover:bg-blue-100 hover:text-blue-900">REGISTRARSE</button>
+          <button @click="handleShowLoginModal" class="font-bold w-40 px-5 py-2 rounded-lg hover:border-blue-700 border-2 text-blue-700 bg-blue-100 mr-3">INGRESAR</button>
+          <button @click="handleShowRegisterModal" class="font-bold w-40 px-5 py-2 rounded-lg hover:border-blue-700 border-2 text-blue-700 bg-blue-100">REGISTRARSE</button>
         </template>
       </div>
     </div>

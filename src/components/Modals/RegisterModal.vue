@@ -62,17 +62,17 @@ const submitFormData = registerModalStore.handleSubmit((values) => {
 </script>
 
 <template>
-  <Modal v-if="registerModalStore.showModal" @closeModal="registerModalStore.setShowModal(false)" :width="'w-3/4'" :height="'h-3/4'" :showCloseIcon="false">
+  <Modal v-if="registerModalStore.showModal" @closeModal="registerModalStore.setShowModal(false)" :width="'w-3/4'" :height="'h-3/4'" :showCloseIcon="true">
     <Loading v-if="registerModalStore.isLoading" />
     <div class="w-full flex flex-col justify-center items-center" v-else>
       <span class="text-sm flex flex-row justify-center items-center mb-10">
         <p class="cursor-default mr-1">¿Ya tienes una cuenta?</p>
-        <p class="cursor-pointer text-blue-900 font-semibold" @click="goToLoginView">Inicia sesión</p>
+        <p class="cursor-pointer bg-white font-semibold" @click="goToLoginView">Inicia sesión</p>
       </span>
 
       <form @submit.prevent="submitFormData" class="rounded-md w-full sm:w-2/5 flex flex-col justify-center items-center">
         <div class="flex flex-col rounded-md w-full">
-          <label for="email" class="text-blue-900 font-semibold text-xs mb-1" :class="{ 'text-xs text-red-700 font-medium pl-2': registerModalStore.meta.touched && registerModalStore.errors && registerModalStore.errors.email }">Correo electrónico</label>
+          <label for="email" class="bg-white font-semibold text-xs mb-1" :class="{ 'text-xs text-red-700 font-medium pl-2': registerModalStore.meta.touched && registerModalStore.errors && registerModalStore.errors.email }">Correo electrónico</label>
           <input
             class="h-8 mb-2 pl-2 bg-blue-100 rounded-md"style="outline: none;" type="email" id="email" v-model="registerModalStore.email"
             :class="{ 'border-red-400 border-2 rounded-xs': registerModalStore.meta.touched && registerModalStore.errors && registerModalStore.errors.email }"
@@ -80,7 +80,7 @@ const submitFormData = registerModalStore.handleSubmit((values) => {
           >
         </div>
         <div class="flex flex-col w-full">
-          <label for="password" class="text-blue-900 font-semibold text-xs mb-1" :class="{ 'text-xs text-red-700 font-medium pl-2': registerModalStore.meta.touched && registerModalStore.errors && registerModalStore.errors.password }">Contraseña</label>
+          <label for="password" class="bg-white font-semibold text-xs mb-1" :class="{ 'text-xs text-red-700 font-medium pl-2': registerModalStore.meta.touched && registerModalStore.errors && registerModalStore.errors.password }">Contraseña</label>
           <input
             class="h-8 mb-2 pl-2 bg-blue-100 rounded-md" style="outline: none;" type="password" id="password" v-model="registerModalStore.password"
             :class="{ 'border-red-400 border-2 rounded-xs': registerModalStore.meta.touched && registerModalStore.errors && registerModalStore.errors.password }"

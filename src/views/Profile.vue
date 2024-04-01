@@ -36,47 +36,47 @@ async function submitFormData() {
 <template>
   <Layout>
     <div class="md:container md:mx-auto pt-5 mb-11">
-      <h1 class="text-left pl-5 text-2xl text-blue-900 font-black mb-4">CONFIGURACIÓN</h1>
+      <h1 class="text-left pl-5 text-2xl text-blue-700 font-black mb-4">CONFIGURACIÓN</h1>
 
-      <p class="text-left pl-5 text-blue-900 font-normal mb-6">Administra tus datos personales y de tus autos.</p>
+      <p class="text-left pl-5 bg-white font-normal mb-6">Administra tus datos personales y de tus autos.</p>
 
-      <form class="mb-4 rounded-md w-11/12 mx-5 p-5 flex flex-col justify-center items-start bg-blue-100">
-        <h2 class="text-lg text-left text-blue-900 font-bold mb-6">Información de contacto</h2>
+      <form class="mb-4 rounded-md w-11/12 mx-5 p-5 flex flex-col justify-center items-start bg-white">
+        <h2 class="text-lg text-left bg-white font-bold mb-6">Información de contacto</h2>
 
         <div class="mb-4 field flex flex-col w-full">
-          <label for="first-name" class="text-blue-900 font-bold text-xs mb-1">Nombres*</label>
+          <label for="first-name" class="bg-white font-bold text-xs mb-1">Nombres*</label>
           <input
             id="first-name"
             v-model="userStore.firstName"
             type="text"
             placeholder="Ingresa tu nombre"
-            class="pl-2"
+            class="pl-2 bg-blue-100"
             style="outline: none;"
             :class="{ 'border-red-400 border-2 rounded-xs': userStore.meta.touched && userStore.errors && userStore.errors.firstName }"
           />
           <p v-if="userStore.meta.touched && userStore.errors && userStore.errors.firstName" class="text-xs text-red-700 font-medium pl-2">Los nombres son requeridos</p>
         </div>
         <div class="mb-4 field flex flex-col w-full">
-          <label for="last-name" class="text-blue-900 font-bold text-xs mb-1">Apellidos*</label>
+          <label for="last-name" class="bg-white font-bold text-xs mb-1">Apellidos*</label>
           <input
             id="last-name"
             v-model="userStore.lastName"
             type="text"
             placeholder="Ingresa tus apellidos"
-            class="pl-2"
+            class="pl-2 bg-blue-100"
             style="outline: none;"
             :class="{ 'border-red-400 border-2 rounded-xs': userStore.meta.touched && userStore.errors && userStore.errors.lastName }"
           />
           <p v-if="userStore.meta.touched && userStore.errors && userStore.errors.lastName" class="text-xs text-red-700 font-medium pl-2">Los apellidos son requeridos</p>
         </div>
         <div class="field flex flex-col w-full">
-          <label for="phone" class="text-blue-900 font-bold text-xs mb-1">Teléfono*</label>
+          <label for="phone" class="bg-white font-bold text-xs mb-1">Teléfono*</label>
           <input
             id="phone"
             v-model="userStore.phone"
             type="tel"
             placeholder="Ingresa tu número de teléfono"
-            class="mb-1 pl-2"
+            class="mb-1 pl-2 bg-blue-100"
             style="outline: none;"
             :class="{ 'border-red-400 border-2 rounded-xs': userStore.meta.touched && userStore.errors && userStore.errors.phone }"
           />
@@ -84,38 +84,38 @@ async function submitFormData() {
         </div>
       </form>
 
-      <form class="mb-4 rounded-md w-11/12 mx-5 p-5 flex flex-col justify-center items-start bg-blue-100">
+      <form class="mb-4 rounded-md w-11/12 mx-5 p-5 flex flex-col justify-center items-start bg-white">
         <span class="flex flex-row justify-between items-center w-full mb-6">
-          <h2 class="text-lg text-left text-blue-900 font-bold mb-4">Información de tus automóviles</h2>
-          <button type="button" @click="userStore.addCar" class="pointer-default bg-blue-600 hover:opacity-80 text-blue-100 font-bold rounded-md px-4 py-1">Agregar automóvil +</button>
+          <h2 class="text-lg text-left bg-white font-bold mb-4">Información de tus automóviles</h2>
+          <button type="button" @click="userStore.addCar" class="pointer-default bg-white hover:opacity-80 text-blue-100 font-bold rounded-md px-4 py-1">Agregar automóvil +</button>
         </span>
 
         <span v-for="(car, index) in userStore.cars" :key="index" class="flex flex-col justify-between items-center w-full">
           <span class="w-full flex flex-row justify-between items-center mb-4">
-            <p class="text-xl text-left text-blue-600 font-black">AUTO N° {{ index + 1 }}</p>
-            <button type="button" @click="userStore.removeCar(index)" class="ml-4 px-2 rounded-md hover:bg-blue-600 hover:text-white font-bold text-blue-600 bg-white">Quitar auto</button>
+            <p class="text-xl text-left text-blue-700 font-black">AUTO N° {{ index + 1 }}</p>
+            <button type="button" @click="userStore.removeCar(index)" class="ml-4 px-2 rounded-md hover:bg-white hover:text-white font-bold text-blue-700 bg-white">Quitar auto</button>
           </span>
 
           <span class="w-full flex flex-row justify-between items-center">
             <div class="field flex flex-col mb-2 w-full mr-1">
-              <label for="brand" class="text-blue-900 font-bold text-xs mb-1">Marca</label>
+              <label for="brand" class="bg-white font-bold text-xs mb-1">Marca</label>
               <input
                 id="brand"
                 v-model="car.brand"
                 type="text"
                 placeholder="Ejemplo: Toyota, Honda, etc."
-                class="mb-4 pl-2"
+                class="mb-4 pl-2 bg-blue-100"
                 style="outline: none;"
               />
             </div>
             <div class="field flex flex-col mb-2 w-full ml-1">
-              <label for="model" class="text-blue-900 font-bold text-xs mb-1">Modelo</label>
+              <label for="model" class="bg-white font-bold text-xs mb-1">Modelo</label>
               <input
                 id="model"
                 v-model="car.model"
                 type="text"
                 placeholder="Ejemplo: Corolla, Civic, etc."
-                class="mb-4 pl-2"
+                class="mb-4 pl-2 bg-blue-100"
                 style="outline: none;"
               />
             </div>
@@ -123,30 +123,30 @@ async function submitFormData() {
 
           <span class="w-full flex flex-row justify-between items-center">
             <div class="field flex flex-col mb-2 w-full mr-1">
-              <label for="year" class="text-blue-900 font-bold text-xs mb-1">Año</label>
+              <label for="year" class="bg-white font-bold text-xs mb-1">Año</label>
               <input
                 id="year"
                 v-model="car.year"
                 type="number"
                 placeholder="Ejemplo: 2022"
-                class="mb-4 pl-2"
+                class="mb-4 pl-2 bg-blue-100"
                 style="outline: none;"
               />
             </div>
             <div class="field flex flex-col mb-2 w-full mr-1 ml-1">
-              <label for="mileage" class="text-blue-900 font-bold text-xs mb-1">Kilometraje Actual</label>
+              <label for="mileage" class="bg-white font-bold text-xs mb-1">Kilometraje Actual</label>
               <input
                 id="mileage"
                 v-model="car.mileage"
                 type="number"
                 placeholder="Ejemplo: 50000"
-                class="mb-4 pl-2"
+                class="mb-4 pl-2 bg-blue-100"
                 style="outline: none;"
               />
             </div>
             <div class="field flex flex-col mb-2 w-full ml-1">
-              <label for="fuel-type" class="text-blue-900 font-bold text-xs mb-1">Tipo de Combustible</label>
-              <select id="fuel-type" v-model="car.fuelType" class="mb-4 pl-2" style="outline: none;">
+              <label for="fuel-type" class="bg-white font-bold text-xs mb-1">Tipo de Combustible</label>
+              <select id="fuel-type" v-model="car.fuelType" class="mb-4 pl-2 bg-blue-100" style="outline: none;">
                 <option value="gasolina">Gasolina</option>
                 <option value="gnv">GNV</option>
                 <option value="glp">GLP</option>
@@ -158,32 +158,32 @@ async function submitFormData() {
 
           <span class="w-full flex flex-row justify-between items-center">        
             <div class="field flex flex-col mb-2 w-full mr-1">
-              <label for="soat-expiry" class="text-blue-900 font-bold text-xs mb-1">Fecha vencimiento SOAT</label>
+              <label for="soat-expiry" class="bg-white font-bold text-xs mb-1">Fecha vencimiento SOAT</label>
               <input
                 id="soat-expiry"
                 v-model="car.soatExpiry"
                 type="date"
-                class="mb-4 pl-2"
+                class="mb-4 pl-2 bg-blue-100"
                 style="outline: none;"
               />
             </div>
             <div class="field flex flex-col mb-2 w-full mr-1 ml-1">
-              <label for="annual-inspection" class="text-blue-900 font-bold text-xs mb-1">Fecha revisión técnica anual</label>
+              <label for="annual-inspection" class="bg-white font-bold text-xs mb-1">Fecha revisión técnica anual</label>
               <input
                 id="annual-inspection"
                 v-model="car.annualInspection"
                 type="date"
-                class="mb-4 pl-2"
+                class="mb-4 pl-2 bg-blue-100"
                 style="outline: none;"
               />
             </div>
             <div class="field flex flex-col mb-2 w-full ml-1">
-              <label for="technical-inspection" class="text-blue-900 font-bold text-xs mb-1">Fecha inspección técnica anual</label>
+              <label for="technical-inspection" class="bg-white font-bold text-xs mb-1">Fecha inspección técnica anual</label>
               <input
                 id="technical-inspection"
                 v-model="car.technicalInspection"
                 type="date"
-                class="mb-4 pl-2"
+                class="mb-4 pl-2 bg-blue-100"
                 style="outline: none;"
               />
             </div>
