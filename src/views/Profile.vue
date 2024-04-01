@@ -8,24 +8,28 @@ import { useAuthStore } from '@/stores/auth'
 
 const authStore = useAuthStore()
 
-const isTouched = ref(false)
 const userStore = useUserStore()
-//const alertStore = useAlertStore()
+const alertStore = useAlertStore()
 const router = useRouter()
 
 onMounted(() => {
   authStore.isAuthenticated ? null : (router.push({ name: 'Home' }))
 })
 
-function submitFormData() {
-  //authStore.setIsLoading(true)
-  isTouched.value ? null : isTouched.value = true
-  /*
-  userStore.submitUserForm(userStore).then(() => {
+async function submitFormData() {
+  userStore.handleSubmit(async (values: any) => {
+    authStore.setIsLoading(true)
+    return await userStore.updateUser({
+      firstName: values.firstName,
+      lastName: values.lastName,
+      phone: values.phone
+    }).then(() => {
+      authStore.setIsLoading(false)
+      alertStore.setShowAlert(true)
+    })
+  }, () => {
     authStore.setIsLoading(false)
-    alertStore.setShowAlert(true)
-  })
-  */
+  })()
 }
 </script>
 
@@ -48,9 +52,9 @@ function submitFormData() {
             placeholder="Ingresa tu nombre"
             class="pl-2"
             style="outline: none;"
-            :class="{ 'border-red-400 border-2 rounded-xs': isTouched && userStore.errors && userStore.errors.firstName }"
+            :class="{ 'border-red-400 border-2 rounded-xs': userStore.meta.touched && userStore.errors && userStore.errors.firstName }"
           />
-          <p v-if="isTouched && userStore.errors && userStore.errors.firstName" class="text-xs text-red-700 font-medium pl-2">Los nombres son requeridos</p>
+          <p v-if="userStore.meta.touched && userStore.errors && userStore.errors.firstName" class="text-xs text-red-700 font-medium pl-2">Los nombres son requeridos</p>
         </div>
         <div class="mb-4 field flex flex-col w-full">
           <label for="last-name" class="text-blue-900 font-bold text-xs mb-1">Apellidos*</label>
@@ -61,9 +65,9 @@ function submitFormData() {
             placeholder="Ingresa tus apellidos"
             class="pl-2"
             style="outline: none;"
-            :class="{ 'border-red-400 border-2 rounded-xs': isTouched && userStore.errors && userStore.errors.lastName }"
+            :class="{ 'border-red-400 border-2 rounded-xs': userStore.meta.touched && userStore.errors && userStore.errors.lastName }"
           />
-          <p v-if="isTouched && userStore.errors && userStore.errors.lastName" class="text-xs text-red-700 font-medium pl-2">Los apellidos son requerido</p>
+          <p v-if="userStore.meta.touched && userStore.errors && userStore.errors.lastName" class="text-xs text-red-700 font-medium pl-2">Los apellidos son requeridos</p>
         </div>
         <div class="field flex flex-col w-full">
           <label for="phone" class="text-blue-900 font-bold text-xs mb-1">Teléfono*</label>
@@ -74,9 +78,9 @@ function submitFormData() {
             placeholder="Ingresa tu número de teléfono"
             class="mb-1 pl-2"
             style="outline: none;"
-            :class="{ 'border-red-400 border-2 rounded-xs': isTouched && userStore.errors && userStore.errors.phone }"
+            :class="{ 'border-red-400 border-2 rounded-xs': userStore.meta.touched && userStore.errors && userStore.errors.phone }"
           />
-          <p v-if="isTouched && userStore.errors && userStore.errors.phone" class="text-xs text-red-700 font-medium pl-2">El teléfono es requerido</p>
+          <p v-if="userStore.meta.touched && userStore.errors && userStore.errors.phone" class="text-xs text-red-700 font-medium pl-2">El teléfono es requerido</p>
         </div>
       </form>
 
@@ -189,7 +193,7 @@ function submitFormData() {
         </span>
       </form>
 
-      <button type="button" @click="submitFormData" class="w-11/12 flex flex-row justify-center items-center mx-5 mb-3 p-1 rounded-md bg-blue-600 hover:opacity-80 text-blue-100 font-bold">GUARDAR</button>
+      <button :disabled="userStore.isSubmitting" type="button" @click="submitFormData" class="w-11/12 flex flex-row justify-center items-center mx-5 mb-3 p-1 rounded-md bg-blue-600 hover:opacity-80 text-blue-100 font-bold">{{ userStore.isSubmitting ? 'ENVIANDO...' : 'GUARDAR' }}</button>
     </div>
   </Layout>
 </template>

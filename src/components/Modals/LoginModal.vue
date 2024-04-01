@@ -15,8 +15,6 @@ const registerModalStore = useRegisterModalStore()
 const userStore = useUserStore()
 const authStore = useAuthStore()
 
-const email = ref('')
-const password = ref('')
 const isThereError = ref(false)
 
 function goToRegisterView() {
@@ -44,7 +42,7 @@ const signInWithEmail = async () => {
   try {
     isThereError.value = false
     loginModalStore.setIsLoading(true)
-    await signInWithEmailAndPassword(auth, email.value, password.value)
+    await signInWithEmailAndPassword(auth, loginModalStore.email || '', loginModalStore.password || '')
       .then(async () => {
         await userStore.getUserByUid(authStore?.uid)
         loginModalStore.setIsLoading(false)
@@ -56,10 +54,16 @@ const signInWithEmail = async () => {
     console.error('Error al iniciar sesión con correo y contraseña:', error)
   }
 }
+
+const submitFormData = loginModalStore.handleSubmit((values) => {
+  signInWithEmail()
+}, ({ errors }) => {
+  authStore.setIsLoading(false)
+})
 </script>
 
 <template>
-  <Modal v-if="loginModalStore.showModal" @closeModal="loginModalStore.setShowModal(false)" :width="'w-3/4'" :height="'h-3/4'">
+  <Modal v-if="loginModalStore.showModal" @closeModal="loginModalStore.setShowModal(false)" :width="'w-3/4'" :height="'h-3/4'" :showCloseIcon="false">
     <Loading v-if="loginModalStore.isLoading" />
     <div class="w-full flex flex-col justify-center items-center" v-else>
       <span v-if="isThereError" class="text-sm flex flex-row justify-center items-center mb-10">
@@ -69,16 +73,18 @@ const signInWithEmail = async () => {
         <p class="cursor-default mr-1">¿No tienes una cuenta?</p>
         <p class="cursor-pointer text-blue-900 font-semibold" @click="goToRegisterView">Registrate gratis</p>
       </span>
-      <form @submit.prevent="signInWithEmail" class="rounded-md w-full sm:w-2/5 flex flex-col justify-center items-center">
+      <form @submit.prevent="submitFormData" class="rounded-md w-full sm:w-2/5 flex flex-col justify-center items-center">
         <div class="flex flex-col rounded-md w-full">
-          <label for="email" class="text-blue-900 font-semibold text-xs mb-1">Correo electrónico</label>
-          <input class="h-8 mb-2 pl-2 bg-blue-100 rounded-md" style="outline: none;" type="email" id="email" v-model="email" required>
+          <label for="email" class="text-blue-900 font-semibold text-xs mb-1" :class="{ 'text-xs text-red-700 font-medium pl-2': loginModalStore.meta.touched && loginModalStore.errors && loginModalStore.errors.email }">Correo electrónico</label>
+          <input :class="{ 'border-red-400 border-2 rounded-xs': loginModalStore.meta.touched && loginModalStore.errors && loginModalStore.errors.email }" class="h-8 mb-2 pl-2 bg-blue-100 rounded-md" style="outline: none;" type="email" id="email" v-model="loginModalStore.email" v-bind="loginModalStore.emailProps">
         </div>
         <div class="flex flex-col w-full">
-          <label for="password" class="text-blue-900 font-semibold text-xs">Contraseña</label>
-          <input class="h-8 mb-2 pl-2 bg-blue-100 rounded-md" style="outline: none;" type="password" id="password" v-model="password" required>
+          <label for="password" class="text-blue-900 font-semibold text-xs mb-1" :class="{ 'text-xs text-red-700 font-medium pl-2': loginModalStore.meta.touched && loginModalStore.errors && loginModalStore.errors.password }">Contraseña</label>
+          <input
+            :class="{ 'border-red-400 border-2 rounded-xs': loginModalStore.meta.touched && loginModalStore.errors && loginModalStore.errors.password }"
+            class="h-8 mb-2 pl-2 bg-blue-100 rounded-md" style="outline: none;" type="password" id="password" v-model="loginModalStore.password" v-bind="loginModalStore.passwordProps" placeholder="Mínimo 6 carácteres">
         </div>
-        <button type="submit" class="w-full flex flex-row justify-center items-center mt-3 py-1 rounded-md bg-blue-600 hover:opacity-80 text-blue-100 font-bold">Iniciar sesión</button>
+        <button :disabled="loginModalStore.isSubmitting" type="submit" class="w-full flex flex-row justify-center items-center mt-3 py-1 rounded-md bg-blue-600 hover:opacity-80 text-blue-100 font-bold">{{ loginModalStore.isSubmitting ? 'Cargando' : 'Iniciar sesión' }}</button>
 
         <div class="flex flex-row justify-between items-baseline">
           <hr class="h-[2px] w-24 bg-[#ededed]">

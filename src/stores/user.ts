@@ -15,7 +15,7 @@ const validationSchema = toTypedSchema(
 ))
 
 export const useUserStore = defineStore('user', () => {
-  const { errors, defineField, handleSubmit } = useForm({ validationSchema })
+  const { errors, defineField, handleSubmit, meta, isSubmitting } = useForm({ validationSchema })
 
   const [firstName, firstNameProps] = defineField('firstName')
   const [lastName, lastNameProps] = defineField('lastName')
@@ -78,22 +78,6 @@ export const useUserStore = defineStore('user', () => {
       latitude: userCoordinates.latitude || '',
       longitude: userCoordinates.longitude || ''
     })
-  }
-
-  const submitUserForm = async (userData: any) => {
-    await handleSubmit(async (values: any) => {
-      try {
-        return await userData.updateUser({
-          uid: userData.uid,
-          firstName: values.firstName,
-          lastName: values.lastName,
-          phone: values.phone,
-          cars: userData.cars
-        })
-      } catch (error) {
-        console.error('Error al enviar el formulario', error)
-      }
-    })()
   }
 
   function addCar() {
@@ -221,14 +205,16 @@ export const useUserStore = defineStore('user', () => {
   return {
     id,
     uid,
+    handleSubmit,
+    isSubmitting,
     errors,
+    meta,
     firstName,
     firstNameProps,
     lastName,
     lastNameProps,
     phone,
     phoneProps,
-    submitUserForm,
     cars,
     setUser,
     getUserByUid,
