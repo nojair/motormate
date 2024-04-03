@@ -5,10 +5,10 @@ import CarWashMap from '@/components/CarWashMap.vue'
 
 <template>
   <Layout>
-    <div class="md:container md:mx-auto pt-5">
-      <h1 class="text-2xl text-left px-5 bg-white font-black text-blue-700 mb-4">LAVADO DE AUTOMÓVILES</h1>
+    <div class="md:container md:mx-auto pt-12">
+      <h1 class="text-2xl text-left px-5 font-bold text-blue-700 mb-4">LAVADO DE AUTOMÓVILES</h1>
 
-      <p class="text-left px-5 bg-white font-normal text-black mb-6">Encuentra talleres de lavado cerca de ti.</p>
+      <p class="text-left px-5 font-normal text-gray-700 mb-12">Encuentra talleres de lavado cerca de ti.</p>
 
       <!--div class="flex flex-row flex-wrap justify-evenly items-center">
         <div v-for="workshop in carWashWorkshops" :key="workshop.key" class="cursor-default w-[21rem] h-[26rem] mb-6 p-2 mr-1 bg-green-100 flex flex-col justify-center items-center rounded-lg shadow-xl">

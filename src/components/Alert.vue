@@ -7,7 +7,7 @@ const alertStore = useAlertStore()
 </script>
 
 <template>
-  <Modal v-if="alertStore.showAlert" @closeModal="alertStore.setShowAlert(false)" :width="'w-1/4'" :height="'h-40'" :showCloseIcon="true">
-    <p class="text-blue-700 font-medium">¡Los datos se actualizaron con éxito!</p>
+  <Modal v-if="alertStore.showAlert" @closeModal="alertStore.setShowAlert(false)" :width="'w-1/3'" :height="'h-40'" :showCloseIcon="true">
+    <p class="text-blue-700 font-bold">¡Los datos se actualizaron con éxito!</p>
   </Modal>
 </template>

@@ -5,6 +5,7 @@ import SideBar from '@/components/SideBar.vue'
 import LoginModal from '@/components/Modals/LoginModal.vue'
 import RegisterModal from '@/components/Modals/RegisterModal.vue'
 import LocationModal from '@/components/Modals/LocationModal.vue'
+import ContactModal from '@/components/Modals/ContactModal.vue'
 import Alert from '@/components/Alert.vue'
 import Footer from '@/components/Footer.vue'
 </script>
@@ -14,6 +15,7 @@ import Footer from '@/components/Footer.vue'
     <LoginModal />
     <RegisterModal />
     <LocationModal />
+    <ContactModal />
     <Alert />
     <TopBar />
     <div class="flex flex-row w-full h-full overflow-y-auto">

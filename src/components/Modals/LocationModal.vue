@@ -88,11 +88,11 @@ function selectHintOption(option: any) {
   <Modal v-if="locationModalStore.showModal" @closeModal="locationModalStore.setShowModal(false)" :showCloseIcon="false">
     <form id="address-form" class="w-full h-full flex flex-col justify-between items-center">
       <span class="w-full h-full mt-10 px-10 flex flex-col justify-start items-center">
-        <label for="autocomplete-input" class="mb-3">Es necesario ingresar una dirección</label>
-        <input v-model="locationSearchTerm" @input="getHintOptions" class="pl-2 w-full h-10 bg-white rounded-xs" style="outline: none;" type="text" id="autocomplete-input" name="autocomplete-input">
+        <label for="autocomplete-input" class="mb-3">Es necesario ingresar una dirección:</label>
+        <input v-model="locationSearchTerm" @input="getHintOptions" class="pl-2 w-full h-10 bg-blue-100 rounded-md" style="outline: none;" type="text" id="autocomplete-input" name="autocomplete-input">
         <ul v-if="locationSearchTerm && !selectedHintOption.place_id" class="w-full bg-blue-50 rounded-xs">
           <li v-for="(hintOption, index) in hintOptions.predictions" :key="index"
-            class="cursor-pointer text-sm hover:bg-white hover:font-medium"
+            class="cursor-pointer text-sm hover:bg-blue-50 hover:font-medium"
             @click="selectHintOption(hintOption)"
           >
             <div class="py-2 px-4">{{ hintOption.description }}</div>
@@ -101,7 +101,7 @@ function selectHintOption(option: any) {
       </span>
 
       <button
-        class="bg-white px-4 py-2 mb-10 text-blue-100 rounded-xs hover:opacity-70"
+        class="bg-blue-700 px-4 py-2 mb-10 text-blue-100 font-bold rounded-md hover:opacity-70"
         :class="{ 'opacity-70': !selectedHintOption.place_id }" type="button" @click="locationModalStore.setShowModal(false)"
         @mouseover="showTooltip = !selectedHintOption.place_id"
         @mouseleave="showTooltip = false"
