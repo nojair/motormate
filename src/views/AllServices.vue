@@ -9,6 +9,7 @@ import FanPNG from '@/assets/icons/fan.png'
 import BrakesPNG from '@/assets/icons/brakes.png'
 import OilPNG from '@/assets/icons/oil.png'
 import CleanPNG from '@/assets/icons/clean.png'
+import SearchingPNG from '@/assets/icons/searching.png'
 
 import { useUserStore } from '@/stores/user'
 import { useContactModalStore } from '@/stores/modal'
@@ -61,6 +62,14 @@ const services = ref([
     price: 'Desde S/60',
     CTAtext: 'CONTACTAR',
     isCarWash: false
+  },
+  {
+    name: 'Consulta general o escaneo',
+    imageSrc: SearchingPNG,
+    description: '<span class="text-blue-700">Diagnóstico completo para tu vehículo, garantizando su óptimo funcionamiento.</span>',
+    price: 'Desde S/60',
+    CTAtext: 'CONTACTAR',
+    isCarWash: false
   }
 ])
 
@@ -69,6 +78,15 @@ watchEffect(() => {
     router.push({ name: 'CarWashServices' })
   }
 })
+
+function handleOpenContactModal(serviceName: string) {
+  if (userStore.cars.length == 1) {
+    const { value: { brand, model, year } } = userStore.cars[0]
+    contactModalStore.setSelectedCar(`${brand} ${model}, ${year}`)
+  }
+
+  contactModalStore.handleShowContactModal(serviceName)
+}
 </script>
 
 <template>
@@ -79,8 +97,8 @@ watchEffect(() => {
       <p class="text-left px-5 font-normal text-gray-700 mb-12">Lista de servicios de mantenimiento y reparación de automóviles <strong>disponibles a domicilio</strong>.</p>
 
       <div class="flex flex-row flex-wrap justify-evenly items-center">
-        <div v-for="service in services" :key="service.name" :class="{ 'bg-blue-900': service.isCarWash, 'bg-rose-50': !service.isCarWash }" class="w-[21rem] h-[25rem] mb-6 p-2 mr-1 flex flex-col justify-center items-center rounded-lg shadow-xl">
-          <p class="text-center text-2xl font-black" :class="{ 'text-rose-100': service.isCarWash, 'text-blue-700': !service.isCarWash }">{{ service.name }}</p>
+        <div v-for="service in services" :key="service.name" :class="{ 'bg-blue-900': service.isCarWash, 'bg-rose-50': !service.isCarWash }" class="w-[21rem] h-[30rem] mb-6 p-2 mr-1 flex flex-col justify-center items-center rounded-lg shadow-xl">
+          <p class="text-center text-2xl font-black w-52" :class="{ 'text-rose-100': service.isCarWash, 'text-blue-700': !service.isCarWash }">{{ service.name }}</p>
           <p v-if="service.price" class="text-center text-base text-blue-500 py-0 font-bold w-ful">{{ service.price }}</p>
           <figure class="my-6 rounded-lg p-2">
             <img :src="service.imageSrc" alt="Car service" class="h-24">
@@ -90,7 +108,7 @@ watchEffect(() => {
             :to="{ name: 'CarWashServices' }"
             class="hover:opacity-80 mb-3 p-1 w-[15rem] rounded-md text-center text-blue-600 text-xl font-black bg-rose-100"
           >{{ service.CTAtext }}</router-link>
-          <button v-else @click="contactModalStore.handleShowContactModal(service.name)" class="flex flex-row justify-center items-center mb-3 p-1 w-[15rem] rounded-md bg-green-500 hover:opacity-70 border-2 border-blue-100">
+          <button v-else @click="handleOpenContactModal(service.name)" class="flex flex-row justify-center items-center mb-3 p-1 w-[15rem] rounded-md bg-green-500 hover:opacity-70 border-2 border-blue-100">
             <p class="text-center text-white text-xl font-black mr-2">{{ service.CTAtext }}</p>
             <i class="fab fa-whatsapp text-white font-black text-2xl"></i>
           </button>

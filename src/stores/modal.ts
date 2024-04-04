@@ -82,30 +82,33 @@ export const useLocationModalStore = defineStore('locationModal', () => {
 export const useContactModalStore = defineStore('contactModal', () => {
   const validationSchema = toTypedSchema(
     Yup.object({
-      selectedCar: Yup.string().required().email(),
-      selectedMotive: Yup.string().required(),
+      selectedCar: Yup.string().required('Debe registrar por lo menos un atomóvil.'),
+      selectedMotive: Yup.string().required('Debe seleccionar un motivo'),
       selectedService: Yup.string().required()
     }
   ))
 
-  const { errors, defineField, handleSubmit, meta, isSubmitting } = useForm({ validationSchema })
+  const { errors, defineField, handleSubmit, meta, isSubmitting, resetForm } = useForm({ validationSchema })
 
   const isLoading = ref(false)
-  const showModal = ref(true)
+  const showModal = ref(false)
 
   const [selectedCar, selectedCarProps] = defineField('selectedCar')
   const [selectedMotive, selectedMotiveProps] = defineField('selectedMotive')
   const [selectedService, selectedServiceProps] = defineField('selectedService')
 
-  function setIsLoading(newIsLoading: boolean) {
+  function setIsLoading(newIsLoading: boolean): void {
     isLoading.value = newIsLoading
   }
-  function setShowModal(newShowModal: boolean) {
+  function setShowModal(newShowModal: boolean): void {
     showModal.value = newShowModal
   }
   function handleShowContactModal(serviceName: string): void {
     selectedService.value = serviceName
     setShowModal(true)
+  }
+  function setSelectedCar(carBrandAndModelAndYear: string): void {
+    selectedCar.value = carBrandAndModelAndYear
   }
 
   return {
@@ -115,9 +118,11 @@ export const useContactModalStore = defineStore('contactModal', () => {
     selectedMotiveProps,
     selectedService,
     selectedServiceProps,
+    setSelectedCar,
     errors,
     defineField,
     handleSubmit,
+    resetForm,
     meta,
     isSubmitting,
     isLoading,

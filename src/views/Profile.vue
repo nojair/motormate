@@ -28,8 +28,8 @@ async function submitFormData() {
       authStore.setIsLoading(false)
       alertStore.setShowAlert(true)
     })
-  }, () => {
-    console.log('err', userStore.errors)
+  }, (err) => {
+    console.log('err', err)
     authStore.setIsLoading(false)
   })()
 }
@@ -176,8 +176,6 @@ async function submitFormData() {
               </div>
             </span>
 
-            <p>{{ userStore.errors }}</p>
-
             <span class="w-full flex sm:flex-row flex-col justify-between items-baseline">        
               <div class="field flex flex-col mb-2 w-full mr-1">
                 <label for="soat-expiry" class="font-bold text-xs mb-1">Fecha vencimiento SOAT</label>
@@ -191,29 +189,29 @@ async function submitFormData() {
                 />
                 <p v-if="userStore.meta.touched && userStore.errors[`cars.${index}.soatExpiry`]" class="text-xs text-red-700 font-medium pl-2">{{ userStore.errors[`cars.${index}.soatExpiry`] }}</p>
               </div>
-              <div class="field flex flex-col mb-2 w-full mr-1 ml-1">
-                <label for="annual-inspection" class="font-bold text-xs mb-1">Fecha revisión técnica anual</label>
+              <div v-if="['gnv', 'glp'].includes(car.value.fuelType)" class="field flex flex-col mb-2 w-full mr-1 ml-1">
+                <label for="annual-inspection" class="font-bold text-xs mb-1">Fecha certificación técnica anual</label>
                 <input
                   id="annual-inspection"
-                  v-model="car.value.annualInspection"
+                  v-model="car.value.annualCertification"
                   type="date"
                   class="pl-2 bg-white rounded-md"
                   style="outline: none;"
-                  :class="{ 'border-red-400 border-2 rounded-xs': userStore.meta.touched && userStore.errors[`cars.${index}.annualInspection`] }"
+                  :class="{ 'border-red-400 border-2 rounded-xs': userStore.meta.touched && userStore.errors[`cars.${index}.annualCertification`] }"
                 />
-                <p v-if="userStore.meta.touched && userStore.errors[`cars.${index}.annualInspection`]" class="text-xs text-red-700 font-medium pl-2">{{ userStore.errors[`cars.${index}.annualInspection`] }}</p>
+                <p v-if="userStore.meta.touched && userStore.errors[`cars.${index}.annualCertification`]" class="text-xs text-red-700 font-medium pl-2">{{ userStore.errors[`cars.${index}.annualCertification`] }}</p>
               </div>
               <div class="field flex flex-col mb-2 w-full ml-1">
-                <label for="technical-inspection" class="font-bold text-xs mb-1">Fecha inspección técnica anual</label>
+                <label for="technical-inspection" class="font-bold text-xs mb-1">Fecha revisión técnica anual</label>
                 <input
                   id="technical-inspection"
-                  v-model="car.value.technicalInspection"
+                  v-model="car.value.annualTechnicalInspection"
                   type="date"
                   class="pl-2 bg-white rounded-md"
                   style="outline: none;"
-                  :class="{ 'border-red-400 border-2 rounded-xs': userStore.meta.touched && userStore.errors[`cars[${index}].technicalInspection`] }"
+                  :class="{ 'border-red-400 border-2 rounded-xs': userStore.meta.touched && userStore.errors[`cars[${index}].annualTechnicalInspection`] }"
                 />
-                <p v-if="userStore.meta.touched && userStore.errors[`cars.${index}.technicalInspection`]" class="text-xs text-red-700 font-medium pl-2">{{ userStore.errors[`cars.${index}.technicalInspection`] }}</p>
+                <p v-if="userStore.meta.touched && userStore.errors[`cars.${index}.annualTechnicalInspection`]" class="text-xs text-red-700 font-medium pl-2">{{ userStore.errors[`cars.${index}.annualTechnicalInspection`] }}</p>
               </div>
             </span>
           </span>

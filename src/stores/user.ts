@@ -39,8 +39,8 @@ interface Car {
   mileage: string;
   fuelType: string;
   soatExpiry: string;
-  annualInspection: string;
-  technicalInspection: string;
+  annualCertification: string;
+  annualTechnicalInspection: string;
 }
 
 interface ValidationError {
@@ -68,12 +68,17 @@ const validationSchema = toTypedSchema(
         soatExpiry: Yup.string()
           .typeError('La fecha de vencimiento del SOAT es obligatoria')
           .required('La fecha de vencimiento del SOAT es obligatoria'),
-        annualInspection: Yup.string()
-          .typeError('La fecha de inspección anual es obligatoria')
-          .required('La fecha de inspección anual es obligatoria'),
-        technicalInspection: Yup.string()
-          .typeError('La fecha de inspección técnica es obligatoria')
-          .required('La fecha de inspección técnica es obligatoria')
+        annualCertification: Yup.string().when('fuelType', ([fuelType], schema: any) => {
+          const FUELTYPES = ['glp','gnv']
+          if (FUELTYPES.includes(fuelType)) {
+            return schema.required('La fecha de revisión técnica anual es obligatoria')
+          } else {
+            return schema.notRequired()
+          }
+        }),
+        annualTechnicalInspection: Yup.string()
+          .typeError('La fecha de inspección técnica anual es obligatoria')
+          .required('La fecha de inspección técnica anual es obligatoria')
       })
     )
   })
@@ -93,8 +98,8 @@ export const useUserStore = defineStore('user', () => {
         mileage: '',
         fuelType: 'gasolina',
         soatExpiry: '',
-        annualInspection: '',
-        technicalInspection: ''
+        annualCertification: '',
+        annualTechnicalInspection: ''
       }]
     }
   })
@@ -166,8 +171,8 @@ export const useUserStore = defineStore('user', () => {
       mileage: '',
       fuelType: 'gasolina',
       soatExpiry: '',
-      annualInspection: '',
-      technicalInspection: ''
+      annualCertification: '',
+      annualTechnicalInspection: ''
     })
   }
 
@@ -193,8 +198,8 @@ export const useUserStore = defineStore('user', () => {
       mileage: '',
       fuelType: '',
       soatExpiry: '',
-      annualInspection: '',
-      technicalInspection: ''
+      annualCertification: '',
+      annualTechnicalInspection: ''
     }])
   }
 
@@ -210,8 +215,8 @@ export const useUserStore = defineStore('user', () => {
       mileage: '',
       fuelType: '',
       soatExpiry: '',
-      annualInspection: '',
-      technicalInspection: ''
+      annualCertification: '',
+      annualTechnicalInspection: ''
     }])
   }
 
@@ -248,8 +253,8 @@ export const useUserStore = defineStore('user', () => {
           mileage: '',
           fuelType: 'gasolina',
           soatExpiry: '',
-          annualInspection: '',
-          technicalInspection: ''
+          annualCertification: '',
+          annualTechnicalInspection: ''
         }]
       }
       setUser(initialData)
@@ -262,7 +267,6 @@ export const useUserStore = defineStore('user', () => {
   }
 
   async function updateUser(userData: any) {
-    console.log('userData', userData, 'id', id)
     try {
       const userDocRef = doc(db, 'users', id.value)
       await updateDoc(userDocRef, userData)
