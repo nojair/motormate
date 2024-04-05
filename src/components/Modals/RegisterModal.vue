@@ -19,6 +19,8 @@ const loginModalStore = useLoginModalStore()
 const userStore = useUserStore()
 const authStore = useAuthStore()
 
+const isThereError = ref(false)
+
 function goToLoginView() {
   registerModalStore.setShowModal(false)
   loginModalStore.setShowModal(true)
@@ -26,6 +28,7 @@ function goToLoginView() {
 
 const registerUser = async () => {
   try {
+    isThereError.value = false
     registerModalStore.setShowModal(true)
     await createUserWithEmailAndPassword(auth, registerModalStore.email || '', registerModalStore.password || '')
       .then(async ({ user: { uid } }: { user: { uid: string }}) => {
@@ -33,38 +36,52 @@ const registerUser = async () => {
           registerModalStore.setShowModal(false)
           router.push({ name: 'Profile' })
         })
-    })
+      })
 
   } catch (error) {
+    isThereError.value = true
     console.error('Error al registrar el usuario:', error)
   }
 }
 
 const signInWithGoogle = async () => {
   try {
+    registerModalStore.setIsLoading(true)
+    isThereError.value = false
     const provider = new GoogleAuthProvider()
     await signInWithPopup(auth, provider)
-      .then(async () => {
-        await userStore.getUserByUid(authStore?.uid)
-        registerModalStore.setIsLoading(false)
-        registerModalStore.setShowModal(false)
+      .then(async ({ user: { uid } }: { user: { uid: string }}) => {
+        await userStore.getUserByUid(uid)
+          .then(async () => {
+            if (userStore.uid) {
+              registerModalStore.setShowModal(false)
+              registerModalStore.setIsLoading(false)
+            } else {
+              await userStore.createUser(uid).then(() => {
+                registerModalStore.setIsLoading(false)
+                registerModalStore.setShowModal(false)
+                router.push({ name: 'Profile' })
+              })
+            }
+          })
       })
   } catch (error) {
+    isThereError.value = true
+    registerModalStore.setIsLoading(false)
     console.error('Error al iniciar sesión con Google:', error)
   }
 }
 
-const submitFormData = registerModalStore.handleSubmit((values) => {
-  registerUser()
-}, ({ errors }) => {
-  authStore.setIsLoading(false)
-})
+const submitFormData = registerModalStore.handleSubmit(() => registerUser(), () => authStore.setIsLoading(false))
 </script>
 
 <template>
   <Modal v-if="registerModalStore.showModal" @closeModal="registerModalStore.setShowModal(false)" :width="'w-3/4'" :height="'h-3/4'" :showCloseIcon="true">
     <Loading v-if="registerModalStore.isLoading" />
     <div class="w-full flex flex-col justify-center items-center" v-else>
+      <span v-if="isThereError" class="text-sm flex flex-row justify-center items-center mb-10">
+        <p class="rounded-xs font-semibold px-4 py-1 bg-red-100 text-red-800 cursor-default mr-1">El correo o la contraseña son incorrectos</p>
+      </span>
       <span class="text-sm flex flex-row justify-center items-center mb-10">
         <p class="cursor-default mr-1">¿Ya tienes una cuenta?</p>
         <p class="cursor-pointer bg-white font-semibold" @click="goToLoginView">Inicia sesión</p>

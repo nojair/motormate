@@ -112,7 +112,7 @@ export const useUserStore = defineStore('user', () => {
   const [lastName, lastNameProps] = defineField('lastName')
   const [phone, phoneProps] = defineField('phone')
 
-  const { remove: removeCar, push: pushCar, fields: cars, replace: replaceCars } = useFieldArray<Car>('cars')
+  const { remove: removeCar, insert: pushCar, fields: cars, replace: replaceCars } = useFieldArray<Car>('cars')
 
   const id = ref('')
   const uid = ref('')
@@ -164,7 +164,7 @@ export const useUserStore = defineStore('user', () => {
   }
 
   function addCar() {
-    pushCar({
+    pushCar(0, {
       brand: '',
       model: '',
       year: new Date().getFullYear(),
@@ -187,7 +187,7 @@ export const useUserStore = defineStore('user', () => {
     phone: string,
     cars: Car[]
   }) {
-    uid.value = userData.uid || ''
+    uid.value = userData.uid || uid.value || ''
     firstName.value = userData.firstName || ''
     lastName.value = userData.lastName || ''
     phone.value = userData.phone || ''
@@ -260,6 +260,7 @@ export const useUserStore = defineStore('user', () => {
       setUser(initialData)
     
       const newUser = await addDoc(usersCollection, initialData)
+      id.value = newUser.id
       return newUser   
     } catch (error) {
       throw error
@@ -268,8 +269,15 @@ export const useUserStore = defineStore('user', () => {
 
   async function updateUser(userData: any) {
     try {
+      const newUserData = {
+        firstName: firstName.value,
+        lastName: lastName.value,
+        phone: phone.value,
+        ...userData
+      }
+      setUser(newUserData)
       const userDocRef = doc(db, 'users', id.value)
-      await updateDoc(userDocRef, userData)
+      await updateDoc(userDocRef, newUserData)
     } catch (error) {
       throw error
     }
@@ -288,6 +296,7 @@ export const useUserStore = defineStore('user', () => {
     phoneProps,
     deleteCar,
     addCar,
+    replaceCars,
     cars,
     errors: procesedErrors,
     handleSubmit,

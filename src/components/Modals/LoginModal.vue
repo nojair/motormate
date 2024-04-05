@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import Loading from '@/components/Loading.vue'
-import Modal from '@/components/Modal.vue'
-
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { auth } from '@/firebase'
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
+
+import Modal from '@/components/Modal.vue'
+import Loading from '@/components/Loading.vue'
 
 import { useLoginModalStore, useRegisterModalStore } from '@/stores/modal'
 import { useUserStore } from '@/stores/user'
@@ -14,6 +15,7 @@ const loginModalStore = useLoginModalStore()
 const registerModalStore = useRegisterModalStore()
 const userStore = useUserStore()
 const authStore = useAuthStore()
+const router = useRouter()
 
 const isThereError = ref(false)
 
@@ -24,15 +26,27 @@ function goToRegisterView() {
 
 const signInWithGoogle = async () => {
   try {
+    registerModalStore.setIsLoading(true)
     isThereError.value = false
     const provider = new GoogleAuthProvider()
     await signInWithPopup(auth, provider)
-      .then(async () => {
-        await userStore.getUserByUid(authStore?.uid)
-        loginModalStore.setIsLoading(false)
-        loginModalStore.setShowModal(false)
+      .then(async ({ user: { uid } }: { user: { uid: string }}) => {
+        await userStore.getUserByUid(uid)
+          .then(async () => {
+            if (userStore.uid) {
+              loginModalStore.setIsLoading(false)
+              loginModalStore.setShowModal(false)
+            } else {
+              await userStore.createUser(uid).then(() => {
+                registerModalStore.setIsLoading(false)
+                loginModalStore.setShowModal(false)
+                router.push({ name: 'Profile' })
+              })
+            }
+          })
       })
   } catch (error) {
+    registerModalStore.setIsLoading(false)
     isThereError.value = true
     console.error('Error al iniciar sesión con Google:', error)
   }
@@ -55,9 +69,9 @@ const signInWithEmail = async () => {
   }
 }
 
-const submitFormData = loginModalStore.handleSubmit((values) => {
+const submitFormData = loginModalStore.handleSubmit(() => {
   signInWithEmail()
-}, ({ errors }) => {
+}, () => {
   authStore.setIsLoading(false)
 })
 </script>

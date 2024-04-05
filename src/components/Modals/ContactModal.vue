@@ -49,9 +49,9 @@ function handleGoToMiProfile() {
     <Loading v-if="contactModalStore.isLoading" />
     <div class="h-full py-20 flex flex-col justify-evenly items-center" v-else-if="!authStore.isAuthenticated">
       <p class="text-gray-700 font-bold">Es necesario</p>
-      <span class="hover:opacity-80 cursor-pointer rounded-lg text-white bg-blue-700 py-2 px-6 font-black" @click="goToLoginView">INICIAR SESIÓN</span>
+      <button type="button" lass="hover:opacity-80 cursor-pointer rounded-lg text-white bg-blue-700 py-2 px-6 font-black" @click="goToLoginView">INICIAR SESIÓN</button>
       <p class="text-gray-700 font-bold">o</p>
-      <span class="hover:opacity-80 cursor-pointer rounded-lg text-white bg-blue-700 py-2 px-6 font-black" @click="goToRegisterView">REGISTRARSE</span>
+      <button type="button" class="hover:opacity-80 cursor-pointer rounded-lg text-white bg-blue-700 py-2 px-6 font-black" @click="goToRegisterView">REGISTRARSE</button>
       <p class="text-gray-700 font-bold">para continuar</p>
     </div>
     <div v-else class="w-full h-full flex flex-col justify-center items-center">

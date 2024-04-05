@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 import { useLoginModalStore, useRegisterModalStore } from '@/stores/modal'
 import { useUserStore } from '@/stores/user'
@@ -16,12 +17,19 @@ const userStore = useUserStore()
 const authStore = useAuthStore()
 const locationModalStore = useLocationModalStore()
 
+const router = useRouter()
+
 const isOverProfile = ref(false)
 
 async function logout() {
   try {
-    await signOut(auth)
-    userStore.resetUser()
+    authStore.setIsLoading(true)
+    await signOut(auth).then(() => {
+      userStore.resetUser()
+      router.push({ name: 'Home' })
+    }).finally(() => {
+      authStore.setIsLoading(false)
+    })
   } catch (error) {
     console.error('Error al cerrar sesión:', error)
   }
@@ -29,7 +37,7 @@ async function logout() {
 </script>
 
 <template>
-  <div class="flex sm:flex-row flex-col justify-between items-center bg-white w-full px-4 py-4 drop-shadow-xl sticky">
+  <div class="z-10 flex sm:flex-row flex-col justify-between items-center bg-white w-full px-4 py-4 drop-shadow-xl sticky">
     <div class="flex flex-row justify-start items-center sm:mb-0 mb-5">
       <p class="cursor-default text-blue-700 border-blue-700 text-4xl font-bold border-4 rounded-xl px-1 hidden sm:block">AUTOWASI</p>
       <div class="flex flex-col justify-center items-center sm:mx-7">
