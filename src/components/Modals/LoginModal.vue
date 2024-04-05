@@ -26,7 +26,7 @@ function goToRegisterView() {
 
 const signInWithGoogle = async () => {
   try {
-    registerModalStore.setIsLoading(true)
+    loginModalStore.setIsLoading(true)
     isThereError.value = false
     const provider = new GoogleAuthProvider()
     await signInWithPopup(auth, provider)
@@ -38,7 +38,7 @@ const signInWithGoogle = async () => {
               loginModalStore.setShowModal(false)
             } else {
               await userStore.createUser(uid).then(() => {
-                registerModalStore.setIsLoading(false)
+                loginModalStore.setIsLoading(false)
                 loginModalStore.setShowModal(false)
                 router.push({ name: 'Profile' })
               })

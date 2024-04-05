@@ -32,7 +32,7 @@ const services = ref([
     organization: 'Nombre del taller',
     imageSrc: AdjustableSpannerPNG,
     description: '<span class="text-blue-700">Servicio regular para mantener el rendimiento óptimo del vehículo.</span>',
-    price: 'Desde S/50',
+    price: 'Desde S/150',
     rating: 4.5,
     endedServices: 37,
     mobile: '+51 987654321',
@@ -43,7 +43,7 @@ const services = ref([
     name: 'Cambio de Aceite',
     imageSrc: OilPNG,
     description: '<span class="text-blue-700">Cambio de aceite y filtro para garantizar un motor saludable.</span>',
-    price: 'Desde S/30 (Incluye filtro)',
+    price: 'Desde S/150 (Incluye filtro)',
     CTAtext: 'CONTACTAR',
     isCarWash: false
   },
@@ -51,15 +51,15 @@ const services = ref([
     name: 'Reparación de Frenos',
     imageSrc: BrakesPNG,
     description: '<span class="text-blue-700">Inspección y reparación de sistemas de frenos para una conducción segura.</span>',
-    price: 'Desde S/100',
+    price: 'Desde S/200',
     CTAtext: 'CONTACTAR',
     isCarWash: false
   },
   {
-    name: 'Revisión de Aire Acondicionado',
+    name: 'Mantenimiento de Aire Acondicionado',
     imageSrc: FanPNG,
     description: '<span class="text-blue-700">Recarga y mantenimiento del sistema de aire acondicionado para un clima interior cómodo.</span>',
-    price: 'Desde S/60',
+    price: 'Desde S/150',
     CTAtext: 'CONTACTAR',
     isCarWash: false
   },
@@ -67,7 +67,7 @@ const services = ref([
     name: 'Consulta general o escaneo',
     imageSrc: SearchingPNG,
     description: '<span class="text-blue-700">Diagnóstico completo para tu vehículo, garantizando su óptimo funcionamiento.</span>',
-    price: 'Desde S/60',
+    price: 'Desde S/50',
     CTAtext: 'CONTACTAR',
     isCarWash: false
   }

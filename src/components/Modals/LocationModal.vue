@@ -85,14 +85,14 @@ function selectHintOption(option: any) {
 </script>
 
 <template>
-  <Modal v-if="locationModalStore.showModal" @closeModal="locationModalStore.setShowModal(false)" :showCloseIcon="false">
+  <Modal v-if="locationModalStore.showModal" @closeModal="locationModalStore.setShowModal(false)" :showCloseIcon="false" width="sm:w-1/3 w-full" height="h-2/3">
     <form id="address-form" class="w-full h-full flex flex-col justify-between items-center">
       <span class="w-full h-full mt-10 px-10 flex flex-col justify-start items-center">
-        <label for="autocomplete-input" class="mb-3">Es necesario ingresar una dirección:</label>
+        <label for="autocomplete-input" class="mb-3 text-center">Es necesario ingresar una dirección:</label>
         <input v-model="locationSearchTerm" @input="getHintOptions" class="pl-2 w-full h-10 bg-blue-100 rounded-md" style="outline: none;" type="text" id="autocomplete-input" name="autocomplete-input">
         <ul v-if="locationSearchTerm && !selectedHintOption.place_id" class="w-full bg-blue-50 rounded-xs">
           <li v-for="(hintOption, index) in hintOptions.predictions" :key="index"
-            class="cursor-pointer text-sm hover:bg-blue-50 hover:font-medium"
+            class="cursor-pointer text-sm hover:bg-blue-100 hover:font-medium"
             @click="selectHintOption(hintOption)"
           >
             <div class="py-2 px-4">{{ hintOption.description }}</div>

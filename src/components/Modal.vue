@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <div class="fixed w-screen h-screen top-0 left-0 flex flex-row justify-center items-center bg-black bg-opacity-80 z-20">
+  <div class="fixed w-screen h-screen top-0 left-0 flex flex-row justify-center items-center bg-black bg-opacity-80 z-30">
     <div class="flex flex-col justify-start items-center bg-white rounded-lg pt-2 px-4" :class="props.width + ' ' + props.height">
       
       <div v-if="showCloseIcon" class="w-full flex flex-row justify-end items-center mb-1">

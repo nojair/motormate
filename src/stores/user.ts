@@ -39,8 +39,8 @@ interface Car {
   mileage: string;
   fuelType: string;
   soatExpiry: string;
-  annualCertification: string;
-  annualTechnicalInspection: string;
+  ngvLpgCertificationDate: string;
+  vehicleInspectionDate: string;
 }
 
 interface ValidationError {
@@ -68,7 +68,7 @@ const validationSchema = toTypedSchema(
         soatExpiry: Yup.string()
           .typeError('La fecha de vencimiento del SOAT es obligatoria')
           .required('La fecha de vencimiento del SOAT es obligatoria'),
-        annualCertification: Yup.string().when('fuelType', ([fuelType], schema: any) => {
+        ngvLpgCertificationDate: Yup.string().when('fuelType', ([fuelType], schema: any) => {
           const FUELTYPES = ['glp','gnv']
           if (FUELTYPES.includes(fuelType)) {
             return schema.required('La fecha de revisión técnica anual es obligatoria')
@@ -76,7 +76,7 @@ const validationSchema = toTypedSchema(
             return schema.notRequired()
           }
         }),
-        annualTechnicalInspection: Yup.string()
+        vehicleInspectionDate: Yup.string()
           .typeError('La fecha de inspección técnica anual es obligatoria')
           .required('La fecha de inspección técnica anual es obligatoria')
       })
@@ -98,8 +98,8 @@ export const useUserStore = defineStore('user', () => {
         mileage: '',
         fuelType: 'gasolina',
         soatExpiry: '',
-        annualCertification: '',
-        annualTechnicalInspection: ''
+        ngvLpgCertificationDate: '',
+        vehicleInspectionDate: ''
       }]
     }
   })
@@ -171,8 +171,8 @@ export const useUserStore = defineStore('user', () => {
       mileage: '',
       fuelType: 'gasolina',
       soatExpiry: '',
-      annualCertification: '',
-      annualTechnicalInspection: ''
+      ngvLpgCertificationDate: '',
+      vehicleInspectionDate: ''
     })
   }
 
@@ -198,8 +198,8 @@ export const useUserStore = defineStore('user', () => {
       mileage: '',
       fuelType: '',
       soatExpiry: '',
-      annualCertification: '',
-      annualTechnicalInspection: ''
+      ngvLpgCertificationDate: '',
+      vehicleInspectionDate: ''
     }])
   }
 
@@ -215,8 +215,8 @@ export const useUserStore = defineStore('user', () => {
       mileage: '',
       fuelType: '',
       soatExpiry: '',
-      annualCertification: '',
-      annualTechnicalInspection: ''
+      ngvLpgCertificationDate: '',
+      vehicleInspectionDate: ''
     }])
   }
 
@@ -253,8 +253,8 @@ export const useUserStore = defineStore('user', () => {
           mileage: '',
           fuelType: 'gasolina',
           soatExpiry: '',
-          annualCertification: '',
-          annualTechnicalInspection: ''
+          ngvLpgCertificationDate: '',
+          vehicleInspectionDate: ''
         }]
       }
       setUser(initialData)
