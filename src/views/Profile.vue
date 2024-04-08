@@ -610,7 +610,7 @@ function getModelsByBrand(selectedBrand: string) {
               <span class="w-full flex sm:flex-row flex-col justify-between items-baseline sm:mb-2">
                 <div class="flex flex-col mb-2 w-full mr-1">
                   <label for="year" class="font-bold text-xs mb-1">Año</label>
-                  <VueDatePicker year-picker
+                  <VueDatePicker year-picker auto-apply
                     id="year"
                     v-model="car.value.year"
                     input-class-name="pl-2 bg-white rounded-md h-9"
@@ -653,7 +653,7 @@ function getModelsByBrand(selectedBrand: string) {
               <span class="w-full flex sm:flex-row flex-col justify-between items-baseline">        
                 <div class="flex flex-col mb-2 w-full mr-1">
                   <label for="soat-expiry" class="font-bold text-xs mb-1">Fecha vencimiento SOAT</label>
-                  <VueDatePicker :enable-time-picker="false"
+                  <VueDatePicker :enable-time-picker="false" auto-apply
                     v-model="car.value.soatExpiry"
                     input-class-name="pl-2 bg-white rounded-lg"
                     style="outline: none;"
@@ -663,7 +663,7 @@ function getModelsByBrand(selectedBrand: string) {
                 </div>
                 <div v-if="['gnv', 'glp'].includes(car.value.fuelType)" class="flex flex-col mb-2 w-full mr-1 ml-1">
                   <label for="annual-inspection" class="font-bold text-xs mb-1">Fecha certificación GNV/GLP</label>
-                  <VueDatePicker :enable-time-picker="false"
+                  <VueDatePicker :enable-time-picker="false" auto-apply
                     v-model="car.value.ngvLpgCertificationDate"
                     input-class-name="pl-2 bg-white rounded-md"
                     style="outline: none;"
@@ -673,7 +673,7 @@ function getModelsByBrand(selectedBrand: string) {
                 </div>
                 <div class="flex flex-col mb-2 w-full ml-1">
                   <label for="technical-inspection" class="font-bold text-xs mb-1">Fecha revisión vehicular</label>
-                  <VueDatePicker :enable-time-picker="false"
+                  <VueDatePicker :enable-time-picker="false" auto-apply
                     v-model="car.value.vehicleInspectionDate"
                     input-class-name="pl-2 bg-white rounded-md"
                     style="outline: none;"

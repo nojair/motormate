@@ -243,11 +243,7 @@ export const useUserStore = defineStore('user', () => {
         foundUserData = doc.data()
         id.value = doc.id
         setUser(foundUserData)
-      })
-      console.log('foundUserData', foundUserData)
-
-      return foundUserData
-      
+      })      
     } else {
       return []
     }
