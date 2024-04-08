@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import AllServicesView from '@/views/AllServices.vue'
 import CarWashServicesView from '@/views/CarWashServices.vue'
 import ProfileView from '@/views/Profile.vue'
+import AdminPanelView from '@/views/AdminPanel.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,6 +26,11 @@ const router = createRouter({
       path: '/profile',
       name: 'Profile',
       component: ProfileView
+    },
+    {
+      path: '/admin-panel',
+      name: 'AdminPanel',
+      component: AdminPanelView
     }
   ]
 })

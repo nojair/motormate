@@ -83,8 +83,30 @@ export const useContactModalStore = defineStore('contactModal', () => {
   const validationSchema = toTypedSchema(
     Yup.object({
       selectedCar: Yup.string().required('Debe registrar por lo menos un atomóvil.'),
-      selectedMotive: Yup.string().required('Debe seleccionar un motivo'),
-      selectedService: Yup.string().required()
+      selectedMotive: Yup.string().when('key', ([key], schema: any) => {
+        const SERVICES_KEYS_FOR_MAINTENANCE = ['tuning', 'brakingSystem', 'airConditioning']
+        if (SERVICES_KEYS_FOR_MAINTENANCE.includes(key)) {
+          return schema.required('Debe seleccionar un motivo')
+        } else {
+          return schema.notRequired()
+        }
+      }),
+      selectedService: Yup.string().required(),
+      motiveDetail: Yup.string().when(['key', 'selectedMotive'], ([key, selectedMotive], schema: any) => {
+        if (selectedMotive == 'otros' || key == 'generalConsultation') {
+          return schema.required('Por favor, proporcione algún detalle')
+        } else {
+          return schema.notRequired()
+        }
+      }),
+      key: Yup.string().required(),
+      oilType: Yup.string().when('key', ([key], schema: any) => {
+        if (key == 'oilChange') {
+          return schema.required('Debe seleccionar un tipo de aceite')
+        } else {
+          return schema.notRequired()
+        }
+      })
     }
   ))
 
@@ -96,6 +118,9 @@ export const useContactModalStore = defineStore('contactModal', () => {
   const [selectedCar, selectedCarProps] = defineField('selectedCar')
   const [selectedMotive, selectedMotiveProps] = defineField('selectedMotive')
   const [selectedService, selectedServiceProps] = defineField('selectedService')
+  const [motiveDetail, motiveDetailProps] = defineField('motiveDetail')
+  const [key, keyProps] = defineField('key')
+  const [oilType, oilTypeProps] = defineField('oilType')
 
   function setIsLoading(newIsLoading: boolean): void {
     isLoading.value = newIsLoading
@@ -103,8 +128,9 @@ export const useContactModalStore = defineStore('contactModal', () => {
   function setShowModal(newShowModal: boolean): void {
     showModal.value = newShowModal
   }
-  function handleShowContactModal(serviceName: string): void {
-    selectedService.value = serviceName
+  function handleShowContactModal(service: any): void {
+    selectedService.value = service.name
+    key.value = service.key
     setShowModal(true)
   }
   function setSelectedCar(carBrandAndModelAndYear: string): void {
@@ -118,6 +144,12 @@ export const useContactModalStore = defineStore('contactModal', () => {
     selectedMotiveProps,
     selectedService,
     selectedServiceProps,
+    oilType,
+    oilTypeProps,
+    key,
+    keyProps,
+    motiveDetail,
+    motiveDetailProps,
     setSelectedCar,
     errors,
     defineField,

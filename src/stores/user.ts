@@ -41,6 +41,8 @@ interface Car {
   soatExpiry: string;
   ngvLpgCertificationDate: string;
   vehicleInspectionDate: string;
+  useType: string;
+  plate: string;
 }
 
 interface ValidationError {
@@ -65,6 +67,8 @@ const validationSchema = toTypedSchema(
           .max(new Date().getFullYear(), 'El año no puede ser mayor al actual'),
         mileage: Yup.string().required('El kilometraje es obligatorio'),
         fuelType: Yup.string().required('El tipo de combustible es obligatorio'),
+        plate: Yup.string().required('La placa es obligatorio'),
+        useType: Yup.string().required('El tipo de uso del vehículo es obligatorio'),
         soatExpiry: Yup.string()
           .typeError('La fecha de vencimiento del SOAT es obligatoria')
           .required('La fecha de vencimiento del SOAT es obligatoria'),
@@ -99,7 +103,9 @@ export const useUserStore = defineStore('user', () => {
         fuelType: 'gasolina',
         soatExpiry: '',
         ngvLpgCertificationDate: '',
-        vehicleInspectionDate: ''
+        vehicleInspectionDate: '',
+        useType: 'private',
+        plate: ''
       }]
     }
   })
@@ -172,7 +178,9 @@ export const useUserStore = defineStore('user', () => {
       fuelType: 'gasolina',
       soatExpiry: '',
       ngvLpgCertificationDate: '',
-      vehicleInspectionDate: ''
+      vehicleInspectionDate: '',
+      useType: 'private',
+      plate: ''
     })
   }
 
@@ -199,7 +207,9 @@ export const useUserStore = defineStore('user', () => {
       fuelType: '',
       soatExpiry: '',
       ngvLpgCertificationDate: '',
-      vehicleInspectionDate: ''
+      vehicleInspectionDate: '',
+      useType: 'private',
+      plate: ''
     }])
   }
 
@@ -216,7 +226,9 @@ export const useUserStore = defineStore('user', () => {
       fuelType: '',
       soatExpiry: '',
       ngvLpgCertificationDate: '',
-      vehicleInspectionDate: ''
+      vehicleInspectionDate: '',
+      useType: 'private',
+      plate: ''
     }])
   }
 
@@ -225,12 +237,16 @@ export const useUserStore = defineStore('user', () => {
       const usersCollection = collection(db, 'users')
       const customQuery = query(usersCollection, where('uid', '==', userUid))
       const querySnapshot = await getDocs(customQuery)
+      let foundUserData = null
 
       querySnapshot.docs.map((doc: any) => {
-        const foundUserData = doc.data()
+        foundUserData = doc.data()
         id.value = doc.id
         setUser(foundUserData)
       })
+      console.log('foundUserData', foundUserData)
+
+      return foundUserData
       
     } else {
       return []
@@ -254,7 +270,9 @@ export const useUserStore = defineStore('user', () => {
           fuelType: 'gasolina',
           soatExpiry: '',
           ngvLpgCertificationDate: '',
-          vehicleInspectionDate: ''
+          vehicleInspectionDate: '',
+          useType: 'private',
+          plate: ''
         }]
       }
       setUser(initialData)
