@@ -414,10 +414,11 @@ const brandsAndModels = reactive([
 ])
 
 const isLoading = ref(false)
-const manualUserUID = ref('')
+const searchedUserEmail = ref('')
 let foundUser = reactive({
   id: '',
   uid: '',
+  email: '',
   firstName: '',
   lastName: '',
   phone: '',
@@ -427,9 +428,9 @@ let foundUser = reactive({
     year: new Date().getFullYear(),
     mileage: '',
     fuelType: 'gasolina',
-    soatExpiry: '',
+    soatDate: '',
     ngvLpgCertificationDate: '',
-    vehicleInspectionDate: '',
+    technicalRevisionDate: '',
     useType: 'private',
     plate: ''
   }]
@@ -440,10 +441,10 @@ function getModelsByBrand(selectedBrand: string) {
   return foundBrandAndModels ? foundBrandAndModels.models : []
 }
 
-async function getUserByUid() {
-  if (manualUserUID.value) {
+async function getUserByEmail() {
+  if (searchedUserEmail.value) {
     const usersCollection = collection(db, 'users')
-    const customQuery = query(usersCollection, where('uid', '==', manualUserUID.value))
+    const customQuery = query(usersCollection, where('email', '==', searchedUserEmail.value))
     const querySnapshot = await getDocs(customQuery)
 
     querySnapshot.docs.map((doc: any) => {
@@ -454,6 +455,7 @@ async function getUserByUid() {
       Object.assign(foundUser, {
         id: '',
         uid: '',
+        email: '',
         firstName: '',
         lastName: '',
         phone: '',
@@ -463,9 +465,9 @@ async function getUserByUid() {
           year: new Date().getFullYear(),
           mileage: '',
           fuelType: 'gasolina',
-          soatExpiry: '',
+          soatDate: '',
           ngvLpgCertificationDate: '',
-          vehicleInspectionDate: '',
+          technicalRevisionDate: '',
           useType: 'private',
           plate: ''
         }]
@@ -509,11 +511,11 @@ async function showAlertAndContinue() {
     <span class="flex flex-row justify-center items-center mb-5">
       <input
         type="text"
-        v-model="manualUserUID"
-        placeholder="Ingresa un UID"
+        v-model="searchedUserEmail"
+        placeholder="Ingresa un correo"
         class="w-1/3 pl-2 bg-white rounded-md py-1 border-2 h-9"
       >
-      <button class="pointer-default hover:opacity-90 border-2 hover:border-blue-700 hover:bg-blue-100 hover:text-blue-700 text-blue-100 bg-blue-700 font-bold rounded-md px-4 py-1" @click="getUserByUid">OBTENER USUARIO</button>
+      <button class="pointer-default hover:opacity-90 border-2 hover:border-blue-700 hover:bg-blue-100 hover:text-blue-700 text-blue-100 bg-blue-700 font-bold rounded-md px-4 py-1" @click="getUserByEmail">OBTENER USUARIO</button>
     </span>
 
     <form v-if="foundUser.uid && !isLoading"
@@ -660,7 +662,7 @@ async function showAlertAndContinue() {
             <div class="flex flex-col mb-2 w-full mr-1">
               <label for="soat-expiry" class="font-bold text-xs mb-1">Fecha vencimiento SOAT</label>
               <VueDatePicker :enable-time-picker="false" auto-apply
-                v-model="car.soatExpiry"
+                v-model="car.soatDate"
                 input-class-name="pl-2 bg-white rounded-lg"
                 style="outline: none;"
               />
@@ -676,7 +678,7 @@ async function showAlertAndContinue() {
             <div class="flex flex-col mb-2 w-full ml-1">
               <label for="technical-inspection" class="font-bold text-xs mb-1">Fecha revisión vehicular</label>
               <VueDatePicker :enable-time-picker="false" auto-apply
-                v-model="car.vehicleInspectionDate"
+                v-model="car.technicalRevisionDate"
                 input-class-name="pl-2 bg-white rounded-md"
                 style="outline: none;"
               />

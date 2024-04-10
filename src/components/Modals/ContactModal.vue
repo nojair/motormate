@@ -53,7 +53,7 @@ const oilTypes = reactive([
 ])
 
 const whatsAppLink = computed(() => {
-  const presentation = `https://api.whatsapp.com/send?phone=${corporativePhone}&text=Mi%20nombre%20es%20*${userStore.firstName}*,%20ID%20*${userStore.uid}*,%20tengo%20un%20*${contactModalStore.selectedCar}*%20y%20requiero%20servicio%20de%20*${contactModalStore.selectedService}*`
+  const presentation = `https://api.whatsapp.com/send?phone=${corporativePhone}&text=Mi%20nombre%20es%20*${userStore.firstName}*,%20Email%20*${authStore.email}*,%20tengo%20un%20*${contactModalStore.selectedCar}*%20y%20requiero%20servicio%20de%20*${contactModalStore.selectedService}*`
   const motive = contactModalStore.selectedMotive ? `%20por%20motivos%20de%20*${contactModalStore.selectedMotive}*` : ''
   const motiveDetail = contactModalStore.motiveDetail ? `%20(Detalles%20*${contactModalStore.motiveDetail}*)` : ''
   const oilType = contactModalStore.oilType ? `%20con%20aceite%20*${contactModalStore.oilType}*` : ''

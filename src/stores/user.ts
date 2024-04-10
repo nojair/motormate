@@ -38,9 +38,9 @@ interface Car {
   year: number;
   mileage: string;
   fuelType: string;
-  soatExpiry: string;
+  soatDate: string;
   ngvLpgCertificationDate: string;
-  vehicleInspectionDate: string;
+  technicalRevisionDate: string;
   useType: string;
   plate: string;
 }
@@ -67,9 +67,25 @@ const validationSchema = toTypedSchema(
           .max(new Date().getFullYear(), 'El año no puede ser mayor al actual'),
         mileage: Yup.string().required('El kilometraje es obligatorio'),
         fuelType: Yup.string().required('El tipo de combustible es obligatorio'),
-        plate: Yup.string().required('La placa es obligatorio'),
-        useType: Yup.string().required('El tipo de uso del vehículo es obligatorio'),
-        soatExpiry: Yup.string()
+        plate: Yup.string()
+          .required('La placa es obligatoria')
+          .matches(/^[A-Za-z]{1}[0-9A-Za-z]{5}$/, 'Parece que el formato de placa es incorrecto')
+          .test('aditional-validation', 'Parece que el formato de placa es incorrecto', function (value) {
+            const characters = value.split('')
+            let numberCounter = 0
+            let lettersCounter = 0
+            characters.map(char => {
+              if (/[0-9]/.test(char)) {
+                numberCounter++
+              } else if (/[a-zA-Z]/.test(char)) {
+                lettersCounter++
+              }
+            })
+
+            return (numberCounter == 4 && lettersCounter == 2) || (numberCounter == 3 && lettersCounter == 3)
+          }),
+        useType: Yup.string().required('El tipo de uso es obligatorio'),
+        soatDate: Yup.string()
           .typeError('La fecha de vencimiento del SOAT es obligatoria')
           .required('La fecha de vencimiento del SOAT es obligatoria'),
         ngvLpgCertificationDate: Yup.string().when('fuelType', ([fuelType], schema: any) => {
@@ -80,7 +96,7 @@ const validationSchema = toTypedSchema(
             return schema.notRequired()
           }
         }),
-        vehicleInspectionDate: Yup.string()
+        technicalRevisionDate: Yup.string()
           .typeError('La fecha de inspección técnica anual es obligatoria')
           .required('La fecha de inspección técnica anual es obligatoria')
       })
@@ -95,18 +111,7 @@ export const useUserStore = defineStore('user', () => {
       firstName: '',
       lastName: '',
       phone: '',
-      cars: [{
-        brand: '',
-        model: '',
-        year: new Date().getFullYear(),
-        mileage: '',
-        fuelType: 'gasolina',
-        soatExpiry: '',
-        ngvLpgCertificationDate: '',
-        vehicleInspectionDate: '',
-        useType: 'private',
-        plate: ''
-      }]
+      cars: []
     }
   })
 
@@ -122,6 +127,7 @@ export const useUserStore = defineStore('user', () => {
 
   const id = ref('')
   const uid = ref('')
+  const email = ref('')
   const coordinates = reactive({
     latitude: '',
     longitude: ''
@@ -176,9 +182,9 @@ export const useUserStore = defineStore('user', () => {
       year: new Date().getFullYear(),
       mileage: '',
       fuelType: 'gasolina',
-      soatExpiry: '',
+      soatDate: '',
       ngvLpgCertificationDate: '',
-      vehicleInspectionDate: '',
+      technicalRevisionDate: '',
       useType: 'private',
       plate: ''
     })
@@ -190,46 +196,27 @@ export const useUserStore = defineStore('user', () => {
 
   function setUser(userData: {
     uid: string,
+    email: string,
     firstName: string,
     lastName: string,
     phone: string,
-    cars: Car[]
+    cars: Car[] | any
   }) {
     uid.value = userData.uid || uid.value || ''
+    email.value = userData.email || ''
     firstName.value = userData.firstName || ''
     lastName.value = userData.lastName || ''
     phone.value = userData.phone || ''
-    replaceCars(userData.cars || [{
-      brand: '',
-      model: '',
-      year: new Date().getFullYear(),
-      mileage: '',
-      fuelType: '',
-      soatExpiry: '',
-      ngvLpgCertificationDate: '',
-      vehicleInspectionDate: '',
-      useType: 'private',
-      plate: ''
-    }])
+    replaceCars(userData.cars || [])
   }
 
   function resetUser() {
     uid.value = ''
+    email.value = ''
     firstName.value = ''
     lastName.value = ''
     phone.value = ''
-    replaceCars([{
-      brand: '',
-      model: '',
-      year: new Date().getFullYear(),
-      mileage: '',
-      fuelType: '',
-      soatExpiry: '',
-      ngvLpgCertificationDate: '',
-      vehicleInspectionDate: '',
-      useType: 'private',
-      plate: ''
-    }])
+    replaceCars([])
   }
 
   async function getUserByUid(userUid: string | null) {
@@ -249,27 +236,17 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  async function createUser(userUid: string) {
+  async function createUser(userUid: string, email: string | undefined) {
     try {
       const usersCollection = collection(db, 'users')
       
       const initialData = {
         uid: userUid,
+        email: email || '',
         firstName: '',
         lastName: '',
         phone: '',
-        cars: [{
-          brand: '',
-          model: '',
-          year: new Date().getFullYear(),
-          mileage: '',
-          fuelType: 'gasolina',
-          soatExpiry: '',
-          ngvLpgCertificationDate: '',
-          vehicleInspectionDate: '',
-          useType: 'private',
-          plate: ''
-        }]
+        cars: []
       }
       setUser(initialData)
     
@@ -301,6 +278,7 @@ export const useUserStore = defineStore('user', () => {
     // state
     id,
     uid,
+    email,
     // validation
     firstName,
     firstNameProps,

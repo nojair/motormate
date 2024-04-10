@@ -10,16 +10,14 @@ import { auth } from '@/firebase'
 
 import { useRegisterModalStore, useLoginModalStore } from '@/stores/modal'
 import { useUserStore } from '@/stores/user'
-import { useAuthStore } from '@/stores/auth'
 
 const router = useRouter()
 
 const registerModalStore = useRegisterModalStore()
 const loginModalStore = useLoginModalStore()
 const userStore = useUserStore()
-const authStore = useAuthStore()
 
-const isThereError = ref(false)
+const isThereError = ref('')
 
 function goToLoginView() {
   registerModalStore.setShowModal(false)
@@ -28,26 +26,35 @@ function goToLoginView() {
 
 const registerUser = async () => {
   try {
-    isThereError.value = false
+    registerModalStore.setIsLoading(true)
+    isThereError.value = ''
     registerModalStore.setShowModal(true)
     await createUserWithEmailAndPassword(auth, registerModalStore.email || '', registerModalStore.password || '')
       .then(async ({ user: { uid } }: { user: { uid: string }}) => {
-        await userStore.createUser(uid).then(() => {
+        await userStore.createUser(uid, registerModalStore.email).then(() => {
+          registerModalStore.setIsLoading(false)
           registerModalStore.setShowModal(false)
           router.push({ name: 'Profile' })
         })
       })
+      .catch(error => {
+        registerModalStore.setIsLoading(false)
+        if (error?.code == 'auth/email-already-in-use') {
+          isThereError.value = 'Este correo ya está registrado'      
+        } else {
+          isThereError.value = 'Error al registrar el usuario'
+        }
+      })
 
-  } catch (error) {
-    isThereError.value = true
-    console.error('Error al registrar el usuario:', error)
+  } catch(error) {
+    registerModalStore.setIsLoading(false)
   }
 }
 
 const signInWithGoogle = async () => {
   try {
     registerModalStore.setIsLoading(true)
-    isThereError.value = false
+    isThereError.value = ''
     const provider = new GoogleAuthProvider()
     await signInWithPopup(auth, provider)
       .then(async ({ user: { uid } }: { user: { uid: string }}) => {
@@ -57,7 +64,7 @@ const signInWithGoogle = async () => {
               registerModalStore.setShowModal(false)
               registerModalStore.setIsLoading(false)
             } else {
-              await userStore.createUser(uid).then(() => {
+              await userStore.createUser(uid, registerModalStore.email).then(() => {
                 registerModalStore.setIsLoading(false)
                 registerModalStore.setShowModal(false)
                 router.push({ name: 'Profile' })
@@ -66,13 +73,12 @@ const signInWithGoogle = async () => {
           })
       })
   } catch (error) {
-    isThereError.value = true
+    isThereError.value = 'Error al iniciar sesión con Google'
     registerModalStore.setIsLoading(false)
-    console.error('Error al iniciar sesión con Google:', error)
   }
 }
 
-const submitFormData = registerModalStore.handleSubmit(() => registerUser(), () => authStore.setIsLoading(false))
+const submitFormData = registerModalStore.handleSubmit(() => registerUser())
 </script>
 
 <template>
@@ -80,7 +86,7 @@ const submitFormData = registerModalStore.handleSubmit(() => registerUser(), () 
     <Loading v-if="registerModalStore.isLoading" />
     <div class="w-full flex flex-col justify-center items-center" v-else>
       <span v-if="isThereError" class="text-sm flex flex-row justify-center items-center mb-10">
-        <p class="rounded-xs font-semibold px-4 py-1 bg-red-100 text-red-800 cursor-default mr-1">El correo o la contraseña son incorrectos</p>
+        <p class="rounded-xs font-semibold px-4 py-1 bg-red-100 text-red-800 cursor-default mr-1">{{ isThereError }}</p>
       </span>
       <span class="text-sm flex flex-row justify-center items-center mb-10">
         <p class="cursor-default mr-1">¿Ya tienes una cuenta?</p>

@@ -37,7 +37,7 @@ const signInWithGoogle = async () => {
               loginModalStore.setIsLoading(false)
               loginModalStore.setShowModal(false)
             } else {
-              await userStore.createUser(uid).then(() => {
+              await userStore.createUser(uid, loginModalStore.email).then(() => {
                 loginModalStore.setIsLoading(false)
                 loginModalStore.setShowModal(false)
                 router.push({ name: 'Profile' })

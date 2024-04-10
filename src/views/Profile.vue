@@ -546,9 +546,13 @@ function getModelsByBrand(selectedBrand: string) {
                 <button type="button" @click="userStore.deleteCar(index)" class="ml-4 px-2 rounded-md text-md font-black hover:opacity-90 hover:bg-blue-700 hover:text-blue-100 text-blue-700 bg-blue-100">Quitar automóvil <i class="fas fa-trash"></i></button>
               </span>
 
-              <span class="w-full flex flex-row justify-start items-center ml-5 mt-4 mb-10">
-                <p class="text-md text-left text-blue-700 font-black mr-3">Próxima revisión técnica:</p>
+              <span v-if="new Date().getFullYear() - car.value.year <= 4 && new Date().getFullYear() - car.value.year > 0" class="w-full flex flex-row justify-start items-center ml-5 mt-4 mb-10">
+                <p class="text-md text-left text-blue-700 font-black mr-3">Primera revisión técnica:</p>
                 <p class="text-md text-left text-gray-700 font-bold">{{ getNextRevisionDate(car.value.useType, car.value.plate, String(car.value.year)) }}</p>
+              </span>
+              <span v-else-if="car.value.technicalRevisionDate" class="w-full flex flex-row justify-start items-center ml-5 mt-4 mb-10">
+                <p class="text-md text-left text-blue-700 font-black mr-3">Próxima revisión técnica:</p>
+                <p class="text-md text-left text-gray-700 font-bold">{{ new Date(car.value.technicalRevisionDate).getDate() }} de {{ new Date(car.value.technicalRevisionDate).toLocaleString('es-ES', { month: 'long' }) }} del {{ new Date(car.value.technicalRevisionDate).getFullYear() }}</p>
               </span>
 
               <span class="w-full flex sm:flex-row flex-col justify-between items-baseline sm:mb-2">
@@ -576,19 +580,20 @@ function getModelsByBrand(selectedBrand: string) {
                   >
                     <option class="text-xs" :value="model" v-for="(model, index) in getModelsByBrand(car.value.brand)" :key="index">{{ model }}</option>
                   </select>
-                  <p v-if="userStore.meta.touched && userStore.errors[`cars.${index}.model`]" class="text-xs text-red-700 font-medium pl-2">{{ userStore.errors[`cars[${index}].model`] }}</p>
+                  <p v-if="userStore.meta.touched && userStore.errors[`cars.${index}.model`]" class="text-xs text-red-700 font-medium pl-2">{{ userStore.errors[`cars.${index}.model`] }}</p>
                 </div>
                 <div class="flex flex-col mb-2 w-full sm:mr-2">
                   <label for="model" class="font-bold text-xs mb-1">Placa</label>
                   <input
                     id="model"
+                    @input="car.value.plate = String(car.value.plate).toUpperCase()"
                     v-model="car.value.plate"
                     type="text"
                     class="pl-2 bg-white rounded-md py-1 border-2 h-9"
                     style="outline: none;"
                     :class="{ 'border-red-400 border-2': userStore.meta.touched && userStore.errors[`cars.${index}.plate`] }"
                   />
-                  <p v-if="userStore.meta.touched && userStore.errors[`cars.${index}.plate`]" class="text-xs text-red-700 font-medium pl-2">{{ userStore.errors[`cars[${index}].plate`] }}</p>
+                  <p v-if="userStore.meta.touched && userStore.errors[`cars.${index}.plate`]" class="text-xs text-red-700 font-medium pl-2">{{ userStore.errors[`cars.${index}.plate`] }}</p>
                 </div>
                 <div class="flex flex-col sm:mb-2 w-full">
                   <label for="fuel-type" class="font-bold text-xs mb-1">Tipo de uso</label>
@@ -601,21 +606,20 @@ function getModelsByBrand(selectedBrand: string) {
                   >
                     <option class="text-xs" value="privateUse">Particular</option>
                     <option class="text-xs" value="serviceUse">De servicios</option>
-                    <option class="text-xs" value="serviceUse:peopleTransportation">De servicios: transportes de personas</option>
                   </select>
-                  <p v-if="userStore.meta.touched && userStore.errors[`cars.${index}.useType`]" class="text-xs text-red-700 font-medium pl-2">{{ userStore.errors[`cars[${index}].useType`] }}</p>
+                  <p v-if="userStore.meta.touched && userStore.errors[`cars.${index}.useType`]" class="text-xs text-red-700 font-medium pl-2">{{ userStore.errors[`cars.${index}.useType`] }}</p>
                 </div>
               </span>
 
               <span class="w-full flex sm:flex-row flex-col justify-between items-baseline sm:mb-2">
                 <div class="flex flex-col mb-2 w-full mr-1">
-                  <label for="year" class="font-bold text-xs mb-1">Año</label>
-                  <VueDatePicker year-picker auto-apply
+                  <label for="year" class="font-bold text-xs mb-1">Año de fabricación</label>
+                  <VueDatePicker year-picker auto-apply :max-date="new Date()"
                     id="year"
                     v-model="car.value.year"
-                    input-class-name="pl-2 bg-white rounded-md h-9"
+                    input-class-name="pl-2 bg-white rounded-md h-9 dp-custom-input"
                     style="outline: none;"
-                    :state="userStore.meta.touched && userStore.errors[`cars.${index}.soatExpiry`] ? false : true"
+                    :state="userStore.meta.touched && userStore.errors[`cars.${index}.year`] ? false : true"
                   />
                   <p v-if="userStore.meta.touched && userStore.errors[`cars.${index}.year`]" class="text-xs text-red-700 font-medium pl-2">{{ userStore.errors[`cars[${index}].year`] }}</p>
                 </div>
@@ -650,36 +654,38 @@ function getModelsByBrand(selectedBrand: string) {
                 </div>
               </span>
 
+              <p class="font-black text-xs text-end w-full text-rose-900 border-b-2 border-rose-900 m-4 mb-6">FECHAS IMPORTANTES</p>
+
               <span class="w-full flex sm:flex-row flex-col justify-between items-baseline">        
                 <div class="flex flex-col mb-2 w-full mr-1">
-                  <label for="soat-expiry" class="font-bold text-xs mb-1">Fecha vencimiento SOAT</label>
-                  <VueDatePicker :enable-time-picker="false" auto-apply
-                    v-model="car.value.soatExpiry"
-                    input-class-name="pl-2 bg-white rounded-lg"
+                  <label for="soat-expiry" class="font-bold text-xs mb-1">SOAT vigente</label>
+                  <VueDatePicker :enable-time-picker="false" auto-apply format="dd/MM/yyyy" :max-date="new Date()"
+                    v-model="car.value.soatDate"
+                    input-class-name="pl-2 bg-white rounded-lg dp-custom-input"
                     style="outline: none;"
-                    :state="userStore.meta.touched && userStore.errors[`cars.${index}.soatExpiry`] ? false : true"
+                    :state="userStore.meta.touched && userStore.errors[`cars.${index}.soatDate`] ? false : true"
                   />
-                  <p v-if="userStore.meta.touched && userStore.errors[`cars.${index}.soatExpiry`]" class="text-xs text-red-700 font-medium pl-2">{{ userStore.errors[`cars.${index}.soatExpiry`] }}</p>
+                  <p v-if="userStore.meta.touched && userStore.errors[`cars.${index}.soatDate`]" class="text-xs text-red-700 font-medium pl-2">{{ userStore.errors[`cars.${index}.soatDate`] }}</p>
                 </div>
                 <div v-if="['gnv', 'glp'].includes(car.value.fuelType)" class="flex flex-col mb-2 w-full mr-1 ml-1">
-                  <label for="annual-inspection" class="font-bold text-xs mb-1">Fecha certificación GNV/GLP</label>
-                  <VueDatePicker :enable-time-picker="false" auto-apply
+                  <label for="annual-inspection" class="font-bold text-xs mb-1">Certificación GNV/GLP vigente</label>
+                  <VueDatePicker :enable-time-picker="false" auto-apply format="dd/MM/yyyy" :max-date="new Date()"
                     v-model="car.value.ngvLpgCertificationDate"
-                    input-class-name="pl-2 bg-white rounded-md"
+                    input-class-name="pl-2 bg-white rounded-md dp-custom-input"
                     style="outline: none;"
                     :state="userStore.meta.touched && userStore.errors[`cars.${index}.ngvLpgCertificationDate`] ? false : true"
                   />
                   <p v-if="userStore.meta.touched && userStore.errors[`cars.${index}.ngvLpgCertificationDate`]" class="text-xs text-red-700 font-medium pl-2">{{ userStore.errors[`cars.${index}.ngvLpgCertificationDate`] }}</p>
                 </div>
                 <div class="flex flex-col mb-2 w-full ml-1">
-                  <label for="technical-inspection" class="font-bold text-xs mb-1">Fecha revisión vehicular</label>
-                  <VueDatePicker :enable-time-picker="false" auto-apply
-                    v-model="car.value.vehicleInspectionDate"
-                    input-class-name="pl-2 bg-white rounded-md"
+                  <label for="technical-inspection" class="font-bold text-xs mb-1">Revisión Técnica vigente</label>
+                  <VueDatePicker :enable-time-picker="false" auto-apply format="dd/MM/yyyy" :max-date="new Date()"
+                    v-model="car.value.technicalRevisionDate"
+                    input-class-name="pl-2 bg-white rounded-md dp-custom-input"
                     style="outline: none;"
-                    :state="userStore.meta.touched && userStore.errors[`cars.${index}.vehicleInspectionDate`] ? false : true"
+                    :state="userStore.meta.touched && userStore.errors[`cars.${index}.technicalRevisionDate`] ? false : true"
                   />
-                  <p v-if="userStore.meta.touched && userStore.errors[`cars.${index}.vehicleInspectionDate`]" class="text-xs text-red-700 font-medium pl-2">{{ userStore.errors[`cars.${index}.vehicleInspectionDate`] }}</p>
+                  <p v-if="userStore.meta.touched && userStore.errors[`cars.${index}.technicalRevisionDate`]" class="text-xs text-red-700 font-medium pl-2">{{ userStore.errors[`cars.${index}.technicalRevisionDate`] }}</p>
                 </div>
               </span>
             </span>
@@ -703,5 +709,14 @@ function getModelsByBrand(selectedBrand: string) {
 .fade-leave-to {
   opacity: 0;
   transform: translateX(30px);
+}
+
+.dp__input_valid {
+  border: #e5e7eb 2px solid;
+  box-shadow: none;
+}
+
+.dp__input_valid:hover {
+  border: #e5e7eb 2px solid;
 }
 </style>
