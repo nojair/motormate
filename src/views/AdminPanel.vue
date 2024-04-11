@@ -568,11 +568,6 @@ async function showAlertAndContinue() {
             <p class="text-xl text-left text-blue-700 font-black">AUTO N° {{ index + 1 }}</p>
           </span>
 
-          <span class="w-full flex flex-row justify-start items-center ml-5 mt-4 mb-10">
-            <p class="text-md text-left text-blue-700 font-black mr-3">Próxima revisión técnica:</p>
-            <p class="text-md text-left text-gray-700 font-bold">{{ getNextRevisionDate(car.useType, car.plate, String(car.year)) }}</p>
-          </span>
-
           <span class="w-full flex sm:flex-row flex-col justify-between items-baseline sm:mb-2">
             <div class="flex flex-col mb-2 w-full sm:mr-2">
               <label for="brand" class="font-bold text-xs mb-1">Marca</label>

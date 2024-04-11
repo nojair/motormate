@@ -10,8 +10,6 @@ import { useUserStore } from '@/stores/user'
 import { useAlertStore } from '@/stores/alert'
 import { useAuthStore } from '@/stores/auth'
 
-import getNextRevisionDate from '@/utils'
-
 import '@vuepic/vue-datepicker/dist/main.css'
 
 const authStore = useAuthStore()
@@ -544,15 +542,6 @@ function getModelsByBrand(selectedBrand: string) {
               <span class="w-full flex flex-row justify-between items-center mb-4">
                 <p class="text-xl text-left text-blue-700 font-black">AUTO N° {{ index + 1 }}</p>
                 <button type="button" @click="userStore.deleteCar(index)" class="ml-4 px-2 rounded-md text-md font-black hover:opacity-90 hover:bg-blue-700 hover:text-blue-100 text-blue-700 bg-blue-100">Quitar automóvil <i class="fas fa-trash"></i></button>
-              </span>
-
-              <span v-if="new Date().getFullYear() - car.value.year <= 4 && new Date().getFullYear() - car.value.year > 0" class="w-full flex flex-row justify-start items-center ml-5 mt-4 mb-10">
-                <p class="text-md text-left text-blue-700 font-black mr-3">Primera revisión técnica:</p>
-                <p class="text-md text-left text-gray-700 font-bold">{{ getNextRevisionDate(car.value.useType, car.value.plate, String(car.value.year)) }}</p>
-              </span>
-              <span v-else-if="car.value.technicalRevisionDate" class="w-full flex flex-row justify-start items-center ml-5 mt-4 mb-10">
-                <p class="text-md text-left text-blue-700 font-black mr-3">Próxima revisión técnica:</p>
-                <p class="text-md text-left text-gray-700 font-bold">{{ new Date(car.value.technicalRevisionDate).getDate() }} de {{ new Date(car.value.technicalRevisionDate).toLocaleString('es-ES', { month: 'long' }) }} del {{ new Date(car.value.technicalRevisionDate).getFullYear() }}</p>
               </span>
 
               <span class="w-full flex sm:flex-row flex-col justify-between items-baseline sm:mb-2">
