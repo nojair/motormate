@@ -27,7 +27,8 @@ const services = ref([
     description: '<span class="text-rose-100">Encuentra talleres cerca de ti.</span>',
     CTAtext: 'VER TALLERES',
     isCarWash: true,
-    showTooltipHelper: false
+    showTooltipHelper: false,
+    isDisabled: false
   },
   {
     name: 'Afinamiento',
@@ -40,7 +41,8 @@ const services = ref([
     mobile: '+51 987654321',
     CTAtext: 'CONTACTAR',
     isCarWash: false,
-    showTooltipHelper: true
+    showTooltipHelper: true,
+    isDisabled: true
   },
   {
     name: 'Cambio de Aceite',
@@ -50,7 +52,8 @@ const services = ref([
     price: 'Desde S/150 (Incluye filtro)',
     CTAtext: 'CONTACTAR',
     isCarWash: false,
-    showTooltipHelper: true
+    showTooltipHelper: true,
+    isDisabled: true
   },
   {
     name: 'Sistema de Frenos',
@@ -60,7 +63,8 @@ const services = ref([
     price: 'Desde S/200',
     CTAtext: 'CONTACTAR',
     isCarWash: false,
-    showTooltipHelper: true
+    showTooltipHelper: true,
+    isDisabled: true
   },
   {
     name: 'Sistema de Aire Acondicionado',
@@ -70,7 +74,8 @@ const services = ref([
     price: 'Desde S/150',
     CTAtext: 'CONTACTAR',
     isCarWash: false,
-    showTooltipHelper: true
+    showTooltipHelper: true,
+    isDisabled: true
   },
   {
     name: 'Consulta general + escaneo',
@@ -80,7 +85,8 @@ const services = ref([
     price: 'Desde S/50',
     CTAtext: 'CONTACTAR',
     isCarWash: false,
-    showTooltipHelper: true
+    showTooltipHelper: true,
+    isDisabled: true
   }
 ])
 
@@ -130,7 +136,10 @@ function handleOpenContactModal(service: any) {
           </figure>
           <p v-if="!service.showTooltipHelper" class="px-1 rounded mb-6 w-[19rem] text-center text-sm font-mono font-black" v-html="service.description"></p>
           <p v-if="service.price" class="text-center text-base text-blue-500 py-0 mb-4 font-bold w-full">{{ service.price }}</p>
-          <router-link v-if="service.isCarWash"
+          <button v-if="service.isDisabled" class="flex flex-row justify-center items-center mb-3 p-1 w-[15rem] rounded-md bg-blue-700 hover:opacity-70 border-2 border-blue-100">
+            <p class="text-center text-white text-xl font-black mr-2">PRÓXIMAMENTE ...</p>
+          </button>
+          <router-link v-else-if="service.isCarWash"
             :to="{ name: 'CarWashServices' }"
             class="hover:opacity-80 mb-3 p-1 w-[15rem] rounded-md text-center text-blue-600 text-xl font-black bg-rose-100"
           >{{ service.CTAtext }}</router-link>
