@@ -40,7 +40,7 @@ function toRadians(grados: any) {
 
 async function initMap(): Promise<void> {
   const { latitude: lat, longitude: lng } = userStore.coordinates
-  const position = (lat && lng) ? { lat, lng } : { lat: -8.1169477, lng: -79.021662 };
+  const position = (lat && lng) ? { lat, lng } : { lat: null, lng: null };
   
   // @ts-ignore
   const { Map } = await google.maps.importLibrary("maps") as google.maps.MapsLibrary;
@@ -53,7 +53,7 @@ async function initMap(): Promise<void> {
   map = new Map(
     document.getElementById('map') as HTMLElement,
     {
-      zoom: 14,
+      zoom: 15,
       center: position,
       mapId: 'f9e9a07281e43ce7'
     }
@@ -203,7 +203,7 @@ async function initMap(): Promise<void> {
 }
 
 watchEffect(async () => {
-  if (userStore.location.postal_code) {
+  if (userStore.coordinates.latitude && userStore.coordinates.longitude) {
     await initMap()
     mapLoading.value = false
   }

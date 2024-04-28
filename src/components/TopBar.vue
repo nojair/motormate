@@ -47,7 +47,7 @@ async function logout() {
         </span>
         <span class="flex flex-row items-center">
           <p class="cursor-default w-fit px-2 text-center text-gray-700 font-semibold py-1">
-            <template v-if="userStore.location.postal_code">
+            <template v-if="userStore.location.administrative_area_level_2 && userStore.location.administrative_area_level_1">
               {{ userStore.location.administrative_area_level_2 }}, {{ userStore.location.administrative_area_level_1 }}
             </template>
             <template v-else>Seleccionar una ubicación</template>

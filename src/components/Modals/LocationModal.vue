@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 
 import Modal from '@/components/Modal.vue'
 import { useLocationModalStore } from '@/stores/modal'
@@ -38,6 +38,7 @@ async function geocodeByPlaceId(place_id: string) {
   geocoder.geocode({ placeId: place_id }, function(results: any, status: any) {
     if (status === 'OK') {
       const location = results[0].geometry.location
+      console.log('location', location)
       const address_components = {
         country: '',
         administrative_area_level_1: '',
@@ -78,17 +79,39 @@ async function geocodeByPlaceId(place_id: string) {
 }
 
 function selectHintOption(option: any) {
+  console.log('option', option)
   selectedHintOption.value = option
   locationSearchTerm.value = option.description
   geocodeByPlaceId(option.place_id)
 }
+
+onMounted(() => {
+  
+})
+
+const isGeolocationDenied = computed(() => {
+  if ("permissions" in navigator) {
+    return navigator.permissions.query({ name: 'geolocation' })
+      .then(result => result.state === 'denied')
+  } else {
+    console.log('Permissions API is not supported here')
+    return false
+  }
+})
 </script>
 
 <template>
   <Modal v-if="locationModalStore.showModal" @closeModal="locationModalStore.setShowModal(false)" :showCloseIcon="false" width="sm:w-1/3 w-full" height="h-2/3">
     <form id="address-form" class="w-full h-full flex flex-col justify-between items-center">
       <span class="w-full h-full mt-10 px-10 flex flex-col justify-start items-center">
-        <label for="autocomplete-input" class="mb-3 text-center">Es necesario ingresar una dirección:</label>
+        <label for="autocomplete-input" class="mb-3 text-center">
+          <template v-if="isGeolocationDenied">
+            Por favor ingresa una dirección o desbloquea el acceso a la geolocalización.
+          </template>
+          <template>
+            Por favor ingresa una dirección:
+          </template>
+        </label>
         <input v-model="locationSearchTerm" @input="getHintOptions" class="pl-2 w-full h-10 bg-blue-100 rounded-md" style="outline: none;" type="text" id="autocomplete-input" name="autocomplete-input">
         <ul v-if="locationSearchTerm && !selectedHintOption.place_id" class="w-full bg-blue-50 rounded-xs">
           <li v-for="(hintOption, index) in hintOptions.predictions" :key="index"
