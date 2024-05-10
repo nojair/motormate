@@ -19,8 +19,7 @@ import Footer from '@/components/Footer.vue'
     <Alert />
     <TopBar />
     <div class="flex flex-row w-full h-full overflow-y-auto">
-      <SideBar />
-      <span class="md:container md:mx-auto w-full sm:pl-44">
+      <span class="md:container md:mx-auto w-full">
         <div class="w-full h-full">
           <slot>Add view</slot>
           <Footer />

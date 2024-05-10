@@ -37,7 +37,7 @@ async function logout() {
 </script>
 
 <template>
-  <div class="z-10 flex sm:flex-row flex-col justify-between items-center bg-white w-full px-4 py-4 drop-shadow-xl sticky">
+  <div class="z-10 flex sm:flex-row flex-col justify-between items-center bg-white w-full px-4 py-4 sticky border-b-[1px]">
     <div class="flex flex-row justify-start items-center sm:mb-0 mb-5">
       <p class="cursor-default text-blue-700 border-blue-700 text-4xl font-bold border-4 rounded-xl px-1 hidden sm:block">AUTOWASI</p>
       <div class="flex flex-col justify-center items-center sm:mx-7">
