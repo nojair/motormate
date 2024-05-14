@@ -60,15 +60,18 @@ async function logout() {
     <div class="flex flex-row justify-between items-center">
       <div class="flex flex-row justify-between items-center">
         <template v-if="authStore.isAuthenticated">
-          <div class="cursor-default bg-white rounded-md sm:mr-10 h-12 min-w-fit px-2 flex flex-col justify-center items-center" @mouseenter="isOverProfile = true" @mouseleave="isOverProfile = false">
+          <div class="cursor-default bg-white rounded-md sm:mr-10 h-12 min-w-fit px-2 flex flex-col justify-center items-center" @mouseenter="isOverProfile = true" @mouseleave="isOverProfile = false" @click="isOverProfile = !isOverProfile">
             <div class="flex flex-row justify-between items-center">
               <i class="fa-solid fa-user mr-2 text-blue-700"></i>
               <p class="text-blue-700 font-black">{{ String(authStore.displayName || '').split(' ')[0] || authStore.email || '-' }}</p>
             </div>
-            <button v-if="isOverProfile" @click="logout" class="cursor-pointer py-1 font-normal rounded-md border-blue-100 border-2 hover:bg-blue-100 text-blue-700 hover:border-blue-700 bg-white w-36 top-[9em] sm:top-[4.3em] absolute flex flex-col justify-between items-center">
-              <div class="absolute w-0 h-0" style="top: -8px; left: 60px; border-left: 7px solid transparent; border-right: 7px solid transparent; border-bottom: 7px solid #1e3a8a;"></div>
-              Cerrar sesión
-            </button>
+            <div v-if="isOverProfile" class="absolute rounded-md top-[9em] sm:top-[4em] flex flex-col justify-center items-center">
+              <div class="w-0 h-0" style="border-left: 7px solid transparent; border-right: 7px solid transparent; border-bottom: 7px solid #1e3a8a;"></div>
+              <router-link :to="{ name: 'Profile' }" class="cursor-pointer py-1 font-normal border-blue-100 border-2 hover:bg-blue-100 text-blue-700 hover:border-blue-700 bg-white w-36 flex flex-col justify-between items-center">Mi perfil</router-link>
+              <button @click="logout" class="cursor-pointer py-1 font-normal border-blue-100 border-2 hover:bg-blue-100 text-blue-700 hover:border-blue-700 bg-white w-36 flex flex-col justify-between items-center">
+                Cerrar sesión
+              </button>
+            </div>
           </div>
         </template>
         <template v-else>
