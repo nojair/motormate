@@ -5,8 +5,8 @@ export const CAR_PLACES: CarServicesOptions[] = [
   { label: "Cocheras", key: CarPlaceKeys.Parking },
   { label: "Talleres de reparación", key: CarPlaceKeys.CarRepair },
   { label: "Gasolineras", key: CarPlaceKeys.GasStation },
-  { label: "Alquiler de automóviles", key: CarPlaceKeys.CarRental },
-  { label: "Concesionario de automóviles", key: CarPlaceKeys.CarDealer },
+  { label: "Alquiler de autos", key: CarPlaceKeys.CarRental },
+  { label: "Concesionario de autos", key: CarPlaceKeys.CarDealer },
 ];
 
 const MAP_ID_FROM_GOOGLE_CLOUD = 'f9e9a07281e43ce7'
