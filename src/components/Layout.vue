@@ -19,10 +19,12 @@ import Footer from '@/components/Footer.vue'
     <Alert />
     <TopBar />
     <div class="flex flex-row w-full h-full overflow-y-auto">
-      <span class="md:container md:mx-auto w-full">
+      <span class="w-full">
         <div class="w-full h-full">
           <slot>Add view</slot>
-          <Footer />
+          <slot name="footer">
+            <Footer />
+          </slot>
         </div>
       </span>
     </div>
