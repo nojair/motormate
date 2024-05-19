@@ -1,3 +1,14 @@
+import { CarPlaceKeys, type CarServicesOptions } from "@/types/cars";
+
+export const CAR_PLACES: CarServicesOptions[] = [
+  { label: "Lavaderos de autos", key: CarPlaceKeys.CarWash },
+  { label: "Cocheras", key: CarPlaceKeys.Parking },
+  { label: "Talleres de reparación", key: CarPlaceKeys.CarRepair },
+  { label: "Gasolineras", key: CarPlaceKeys.GasStation },
+  { label: "Alquiler de automóviles", key: CarPlaceKeys.CarRental },
+  { label: "Concesionario de automóviles", key: CarPlaceKeys.CarDealer },
+];
+
 const MAP_ID_FROM_GOOGLE_CLOUD = 'f9e9a07281e43ce7'
 const DEFAULT_PLACES_TYPE = 'car_wash'
 const DEFAULT_RADIUS = 5000
@@ -10,33 +21,33 @@ const infoWindows = <any>[]
 function fromGradesToRadians(grades: any) {
   return grades * Math.PI / 180;
 }
-  
+
 function getKilometersBetweenTwoLocations(locationA: any, locationB: any) {
   const radioTierra = 6371; // Earth radius in kilometers
-  
+
   const radiansLatA = fromGradesToRadians(locationA.lat);
   const radiansLatB = fromGradesToRadians(locationB.lat);
   const deltaLat = fromGradesToRadians(locationB.lat - locationA.lat);
   const deltaLng = fromGradesToRadians(locationB.lng - locationA.lng);
-  
+
   // get kilometers between points A and B using Haversine formule
   const a = Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
-            Math.cos(radiansLatA) * Math.cos(radiansLatB) *
-            Math.sin(deltaLng / 2) * Math.sin(deltaLng / 2);
+    Math.cos(radiansLatA) * Math.cos(radiansLatB) *
+    Math.sin(deltaLng / 2) * Math.sin(deltaLng / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   const kilometers = radioTierra * c;
-  
+
   const roundedDistance = Math.round(kilometers * 10) / 10;
-  
+
   return roundedDistance;
 }
-  
-async function getPlacesForMap(selectedMapCenter: any, dependencies: any, bounds?: any) {
-  await dependencies.placesService.nearbySearch({
+
+async function getPlacesForMap(type: CarPlaceKeys, selectedMapCenter: any, dependencies: any, bounds?: any) {
+  await dependencies.placesService?.nearbySearch({
     radius: DEFAULT_RADIUS,
     bounds,
     location: selectedMapCenter,
-    type: DEFAULT_PLACES_TYPE
+    type
   }, async (results: any, status: any) => {
     // @ts-ignore
     if (status === google.maps.places.PlacesServiceStatus.OK) {
@@ -49,9 +60,9 @@ async function getPlacesForMap(selectedMapCenter: any, dependencies: any, bounds
           content: dependencies.pinForCarWash.element,
           zIndex: placeIndex
         })
-  
+
         const placeCoordinates = { lat: placeLocation.lat(), lng: placeLocation.lng() }
-  
+
         // @ts-ignore
         const infowindow = new google.maps.InfoWindow({
           content: `
@@ -65,29 +76,29 @@ async function getPlacesForMap(selectedMapCenter: any, dependencies: any, bounds
             </ul>
           `
         })
-  
+
         marker.addListener('gmp-click', () => {
           if (selectedMarker?.zIndex != marker.zIndex) {
             if (selectedMarker) selectedMarker.content = dependencies.pinForCarWash.element
             marker.content = dependencies.pinForSelectedCarWash.element
             selectedMarker = marker
-                  
+
             infoWindows.forEach((infoWindow: any) => infoWindow.close())
             infowindow.open({
               anchor: marker,
               map: dependencies.map
             })
-                
+
             infoWindows.push(infowindow)
           }
         })
-  
+
       }
     }
   });
 }
 
-export async function initMap({ lat, lng }: { lat: any, lng: any }): Promise<void> {
+export async function initMap({ type, lat, lng }: { type: CarPlaceKeys, lat: any, lng: any }): Promise<void> {
   // @ts-ignore
   const { Map } = await google.maps.importLibrary("maps") as google.maps.MapsLibrary;
 
@@ -98,7 +109,7 @@ export async function initMap({ lat, lng }: { lat: any, lng: any }): Promise<voi
 
   // @ts-ignore
   const selectedMapCenter = new google.maps.LatLng(lat, lng);
-  
+
   // @ts-ignore
   map = new Map(document.getElementById('map') as HTMLElement, {
     zoom: DEFAULT_ZOOM,
@@ -129,10 +140,10 @@ export async function initMap({ lat, lng }: { lat: any, lng: any }): Promise<voi
     pinForCarWash,
     pinForSelectedCarWash
   }
-  
-  await getPlacesForMap(selectedMapCenter, dependencies);
-  
-  map.addListener('bounds_changed', async function() {
+
+  await getPlacesForMap(type, selectedMapCenter, dependencies);
+
+  map.addListener('bounds_changed', async function () {
     // render map with new bounds
     const bounds = map.getBounds();
     await getPlacesForMap(selectedMapCenter, dependencies, bounds);

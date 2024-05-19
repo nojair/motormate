@@ -32,7 +32,7 @@ async function getUserGeolocation() {
               street_number: '',
               postal_code: ''
             }
-            
+
             results[0].address_components.map((address_component: any) => {
               if (address_component.types.includes('country')) {
                 address_components.country = address_component.long_name
@@ -52,7 +52,7 @@ async function getUserGeolocation() {
                 address_components.postal_code = address_component.long_name
               }
             })
-            
+
             userStore.setUserLocation(address_components)
           } else {
             console.error('Error al geocodificar la dirección:', status)
