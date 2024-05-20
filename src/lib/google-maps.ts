@@ -62,20 +62,36 @@ async function getPlacesForMap(type: CarPlaceKeys, selectedMapCenter: any, depen
 
         const placeCoordinates = { lat: placeLocation.lat(), lng: placeLocation.lng() }
         const mapCenterCoodinates = { lat: selectedMapCenter.lat(), lng: selectedMapCenter.lng() }
-
         // @ts-ignore
         const infowindow = new google.maps.InfoWindow({
           content: `
-            <ul class="py-2">
-            <li class="flex flex-row items-center"><p class="mb-2"><span class="font-semibold">Razón Social:</span> ${place.name || ''} <span class="font-semibold">(${getKilometersBetweenTwoLocations(mapCenterCoodinates, placeCoordinates)} Km)</span></p></li>
-            <li class="flex flex-row items-center">${place.business_status ? '<p class="mb-2"><span class="font-semibold">Estado:</span> Operacional</p>' : ''}</li>
-            <li class="flex flex-row items-center">${place.isOpen ? '<p class="mb-2 font-semibold">Abierto ahora</p>' : ''}</li>
-            <li class="flex flex-row items-center">${place.vicinity ? `<p class="mb-2"><span class="font-semibold">Dirección: </span>${place.vicinity}</p>` : ''}</li>
-            <li class="flex flex-row items-center">${place.user_ratings_total ? `<p class="mb-2"><span class="font-semibold">Rating: </span>⭐ ${place.rating} (${place.user_ratings_total})</p>` : ''}</li>
-            <li class="mt-2"><a class="text-sm text-blue-700 font-black rounded-md py-1" href="https://www.google.com/maps/place/?q=place_id:${place.place_id}" target="_blank" rel="noopener noreferrer">Abrir en Google Maps</a></li>
-            </ul>
+            <div class="p-4">
+              <ul class="space-y-2">
+                <li class="flex flex-row items-center">
+                  <p class="mb-0 text-[17px]"> ${place.name || ''} <span class="font-semibold">(${getKilometersBetweenTwoLocations(mapCenterCoodinates, placeCoordinates)} Km)</span></p>
+                </li>
+                <li class="flex flex-row items-center">
+                  ${place.business_status ? '<p class="mb-0 text-green-600"><span class="font-semibold">Estado:</span> Operacional</p>' : ''}
+                </li>
+                <li class="flex flex-row items-center">
+                  ${place.isOpen ? '<p class="mb-0 text-green-600 font-semibold">Abierto ahora</p>' : ''}
+                </li>
+                <li class="flex flex-row items-center">
+                  ${place.vicinity ? `<p class="mb-0"><span class="font-semibold">Dirección: </span>${place.vicinity}</p>` : ''}
+                </li>
+                <li class="flex flex-row items-center">
+                  ${place.user_ratings_total ? `<p class="mb-0"><span class="font-semibold">Rating: </span>⭐ ${place.rating} (${place.user_ratings_total})</p>` : ''}
+                </li>
+                <li>
+                  <a class="text-sm text-blue-700 font-semibold rounded-md py-2 px-4 bg-blue-100 hover:bg-blue-200 transition-colors block text-center" href="https://www.google.com/maps/place/?q=place_id:${place.place_id}" target="_blank" rel="noopener noreferrer">
+                    Abrir en Google Maps
+                  </a>
+                </li>
+              </ul>
+            </div>
           `
-        })
+        });
+
 
         marker.addListener('gmp-click', () => {
           if (selectedMarker?.zIndex != marker.zIndex) {
