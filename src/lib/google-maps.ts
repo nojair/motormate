@@ -10,7 +10,6 @@ export const CAR_PLACES: CarServicesOptions[] = [
 ];
 
 const MAP_ID_FROM_GOOGLE_CLOUD = 'f9e9a07281e43ce7'
-const DEFAULT_PLACES_TYPE = 'car_wash'
 const DEFAULT_RADIUS = 5000
 const DEFAULT_ZOOM = 15
 
@@ -62,12 +61,13 @@ async function getPlacesForMap(type: CarPlaceKeys, selectedMapCenter: any, depen
         })
 
         const placeCoordinates = { lat: placeLocation.lat(), lng: placeLocation.lng() }
+        const mapCenterCoodinates = { lat: selectedMapCenter.lat(), lng: selectedMapCenter.lng() }
 
         // @ts-ignore
         const infowindow = new google.maps.InfoWindow({
           content: `
             <ul class="py-2">
-            <li class="flex flex-row items-center"><p class="mb-2"><span class="font-semibold">Taller:</span> ${place.name || ''} <span class="font-semibold">(${getKilometersBetweenTwoLocations(selectedMapCenter, placeCoordinates)} Km)</span></p></li>
+            <li class="flex flex-row items-center"><p class="mb-2"><span class="font-semibold">Razón Social:</span> ${place.name || ''} <span class="font-semibold">(${getKilometersBetweenTwoLocations(mapCenterCoodinates, placeCoordinates)} Km)</span></p></li>
             <li class="flex flex-row items-center">${place.business_status ? '<p class="mb-2"><span class="font-semibold">Estado:</span> Operacional</p>' : ''}</li>
             <li class="flex flex-row items-center">${place.isOpen ? '<p class="mb-2 font-semibold">Abierto ahora</p>' : ''}</li>
             <li class="flex flex-row items-center">${place.vicinity ? `<p class="mb-2"><span class="font-semibold">Dirección: </span>${place.vicinity}</p>` : ''}</li>
@@ -83,7 +83,9 @@ async function getPlacesForMap(type: CarPlaceKeys, selectedMapCenter: any, depen
             marker.content = dependencies.pinForSelectedCarWash.element
             selectedMarker = marker
 
-            infoWindows.forEach((infoWindow: any) => infoWindow.close())
+            infoWindows.forEach((infoWindow: any) => {
+              return infoWindow.close()
+            })
             infowindow.open({
               anchor: marker,
               map: dependencies.map
