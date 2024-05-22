@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue';
+import { ref, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 import { useLoginModalStore, useRegisterModalStore } from "@/stores/modal";
@@ -20,7 +20,7 @@ const locationModalStore = useLocationModalStore();
 const isCarWashServicesRoute = ref(false);
 
 watchEffect(() => {
-  isCarWashServicesRoute.value = route.path === '/car-wash-services';
+  isCarWashServicesRoute.value = route.path === "/car-wash-services";
 });
 
 const router = useRouter();
@@ -85,7 +85,11 @@ async function logout() {
     </div>
 
     <div class="flex items-center gap-10">
-      <router-link v-if='!isCarWashServicesRoute' :to="{ name: 'CarWashServices' }" class='flex items-center gap-2'>
+      <router-link
+        v-if="!isCarWashServicesRoute"
+        :to="{ name: 'CarWashServices' }"
+        class="flex items-center gap-2"
+      >
         <i class="fa-regular fa-map text-blue-700"></i>
         <div class="cursor-pointer text-blue-700 font-black">
           Regresar al mapa

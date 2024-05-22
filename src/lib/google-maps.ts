@@ -127,7 +127,6 @@ export async function initMap({ type, lat, lng }: { type: CarPlaceKeys, lat: any
 
   // @ts-ignore
   const selectedMapCenter = new google.maps.LatLng(lat, lng);
-
   // @ts-ignore
   map = new Map(document.getElementById('map') as HTMLElement, {
     zoom: DEFAULT_ZOOM,
