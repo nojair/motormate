@@ -11,3 +11,5 @@ node_modules
 # Ignore IDE specific files
 .idea/
 .vscode/
+
+dist
