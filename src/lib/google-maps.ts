@@ -163,6 +163,6 @@ export async function initMap({ type, lat, lng }: { type: CarPlaceKeys, lat: any
   map.addListener('bounds_changed', async function () {
     // render map with new bounds
     const bounds = map.getBounds();
-    await getPlacesForMap(selectedMapCenter, dependencies, bounds);
+    await getPlacesForMap(type, selectedMapCenter, dependencies, bounds);
   });
 }

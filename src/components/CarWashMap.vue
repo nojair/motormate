@@ -32,7 +32,7 @@ watchEffect(async () => {
   }
 });
 
-const dinamicHeightStyles = computed(() => ({
+const dynamicHeightStyles = computed(() => ({
   height: dynamicHeight.value,
 }));
 
@@ -43,10 +43,10 @@ const dinamicHeightStyles = computed(() => ({
     <div
       v-if="carsStore.mapLoading"
       class="relative flex justify-center items-center w-full text-lg font-bold text-gray-600"
-      :style="dinamicHeightStyles"
+      :style="dynamicHeightStyles"
     >
       <Loader />
     </div>
-    <div id="map" :style="dinamicHeightStyles"></div>
+    <div id="map" :style="dynamicHeightStyles"></div>
   </div>
 </template>
