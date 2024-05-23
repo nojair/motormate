@@ -14,8 +14,8 @@ const carsStore = useCarsStore();
   <Layout>
     <template #default>
       <ResponsiveContainer>
-        <div class="flex justify-between items-center">
-          <h1 class="text-2xl text-left font-bold text-blue-700 my-9 uppercase">
+        <div class="flex sm:flex-row flex-col justify-evenly items-center">
+          <h1 class="sm:text-2xl text-xl text-left font-bold text-blue-700 my-2 uppercase sx:text-left text-center">
             {{
               CAR_PLACES.find((option) => option.key === carsStore.servicekey)
                 ?.label

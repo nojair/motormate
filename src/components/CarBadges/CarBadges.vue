@@ -11,9 +11,9 @@ const updateKeyMap = (key: CarPlaceKeys) => {
 </script>
 
 <template>
-  <div class='flex flex-col gap-2'>
-    <h4>Encuentra tambien:</h4>
-    <div class="w-[480px] flex flex-wrap gap-x-2 gap-y-1">
+  <div class='flex flex-col gap-2 items-center'>
+    <h4>Encuentra también:</h4>
+    <div class="pl-12 w-[480px] flex flex-wrap gap-x-2 gap-y-1 xl:items-center">
       <span
         v-for="element in CAR_PLACES"
         :key="element.key"
