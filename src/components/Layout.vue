@@ -11,7 +11,7 @@ import Footer from '@/components/Footer.vue'
 </script>
 
 <template>
-  <div class="flex flex-col w-full h-screen overflow-hidden">
+  <div class="flex flex-col w-full min-h-screen overflow-hidden">
     <LoginModal />
     <RegisterModal />
     <LocationModal />
@@ -19,11 +19,12 @@ import Footer from '@/components/Footer.vue'
     <Alert />
     <TopBar />
     <div class="flex flex-row w-full h-full overflow-y-auto">
-      <SideBar />
-      <span class="md:container md:mx-auto w-full sm:pl-44">
-        <div class="w-full h-full">
+      <span class="w-full">
+        <div class="w-full min-h-[calc(100vh-89px)] flex flex-col justify-between">
           <slot>Add view</slot>
-          <Footer />
+          <slot name="footer">
+            <Footer />
+          </slot>
         </div>
       </span>
     </div>
