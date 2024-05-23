@@ -519,7 +519,7 @@ async function showAlertAndContinue() {
     </span>
 
     <form v-if="foundUser.uid && !isLoading"
-      class="mb-4 rounded-xs w-11/12 mx-5 p-5 flex flex-col justify-center items-start bg-rose-100 rounded-xs px-4 py-5 drop-shadow-md"
+      class="mb-4 rounded-xs w-full p-5 flex flex-col justify-center items-start bg-rose-100 rounded-xs px-4 py-5 drop-shadow-md"
     >
       <h2 class="text-lg text-left font-bold mb-6 text-blue-700">Información de contacto</h2>
       <p class="text-lg font-black mb-6">UID: {{ foundUser.uid || '-' }}</p>
@@ -561,7 +561,7 @@ async function showAlertAndContinue() {
     </form>
 
     <form v-if="foundUser.uid && !isLoading"
-      class="mb-4 w-11/12 mx-5 p-5 flex flex-col justify-center items-start bg-rose-100 px-4 py-5 drop-shadow-md">     
+      class="mb-4 w-full p-5 flex flex-col justify-center items-start bg-rose-100 px-4 py-5 drop-shadow-md">     
       <li v-for="(car, index) in foundUser.cars" :key="index" class="flex flex-col justify-between items-center w-full">
         <span class="flex flex-col justify-between items-center w-full bg-rose-50 px-2 py-2">          
           <span class="w-full flex flex-row justify-between items-center mb-4">
@@ -688,9 +688,9 @@ async function showAlertAndContinue() {
     <button v-if="foundUser.uid && !isLoading"
       type="button"
       @click="showAlertAndContinue"
-      class="w-11/12 flex flex-row justify-center items-center mx-5 mb-3 p-1 rounded-md bg-blue-700 hover:opacity-80 text-blue-50 font-bold"
+      class="w-full flex flex-row justify-center items-center mb-3 p-1 rounded-md bg-blue-700 hover:opacity-80 text-blue-50 font-bold"
     >GUARDAR</button>
 
-    <div v-if="isLoading" class="text-center font-black mb-4 w-11/12 mx-5 p-5 flex flex-col justify-center items-start bg-rose-100 px-4 py-5 drop-shadow-md">A C T U A L I Z A N D O ...</div>
+    <div v-if="isLoading" class="text-center font-black mb-4 w-full p-5 flex flex-col justify-center items-start bg-rose-100 px-4 py-5 drop-shadow-md">A C T U A L I Z A N D O ...</div>
   </Layout>
 </template>

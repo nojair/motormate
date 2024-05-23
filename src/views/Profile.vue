@@ -481,7 +481,7 @@ function getModelsByBrand(selectedBrand: string) {
 
       <p class="text-left pl-5 text-gray-700 font-normal mb-12">Administra tus datos personales y de tus autos.</p>
 
-      <form class="mb-4 rounded-xs w-11/12 mx-5 p-5 flex flex-col justify-center items-start bg-rose-100 rounded-xs px-4 py-5 drop-shadow-md">
+      <form class="mb-4 rounded-xs w-full p-5 flex flex-col justify-center items-start bg-rose-100 rounded-xs px-4 py-5 drop-shadow-md">
         <h2 class="text-lg text-left font-bold mb-6 text-blue-700">Información de contacto</h2>
 
         <span class="flex sm:flex-row flex-col justify-between w-full items-baseline">
@@ -527,7 +527,7 @@ function getModelsByBrand(selectedBrand: string) {
         </span>
       </form>
 
-      <form class="mb-4 w-11/12 mx-5 p-5 flex flex-col justify-center items-start bg-rose-100 px-4 py-5 drop-shadow-md">
+      <form class="mb-4 w-full p-5 flex flex-col justify-center items-start bg-rose-100 px-4 py-5 drop-shadow-md">
         <span class="flex flex-row justify-between items-center w-full mb-6">
           <h2 class="text-lg text-left font-bold text-blue-700">Información de tus automóviles</h2>
           <button
@@ -684,7 +684,7 @@ function getModelsByBrand(selectedBrand: string) {
         </TransitionGroup>
       </form>
 
-      <button :disabled="userStore.isSubmitting" type="button" @click="handleFormConfirmationModal" class="w-11/12 flex flex-row justify-center items-center mx-5 mb-3 p-1 rounded-md bg-blue-700 hover:opacity-80 text-blue-50 font-bold">{{ userStore.isSubmitting ? 'ENVIANDO...' : 'GUARDAR' }}</button>
+      <button :disabled="userStore.isSubmitting" type="button" @click="handleFormConfirmationModal" class="w-full flex flex-row justify-center items-center mb-3 p-1 rounded-md bg-blue-700 hover:opacity-80 text-blue-50 font-bold">{{ userStore.isSubmitting ? 'ENVIANDO...' : 'GUARDAR' }}</button>
     </div>
   </Layout>
 </template>

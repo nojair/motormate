@@ -20,7 +20,7 @@ import Footer from '@/components/Footer.vue'
     <TopBar />
     <div class="flex flex-row w-full h-full overflow-y-auto">
       <span class="w-full">
-        <div class="w-full min-h-[calc(100vh-89px)] flex flex-col justify-between">
+        <div class="w-full flex flex-col justify-between">
           <slot>Add view</slot>
           <slot name="footer">
             <Footer />
