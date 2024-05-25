@@ -16,6 +16,7 @@ const DEFAULT_ZOOM = 15
 let map = <any>null
 let selectedMarker = <any>null
 const infoWindows = <any>[]
+let bounds_changed_controller_timer = <any>null
 
 function fromGradesToRadians(grades: any) {
   return grades * Math.PI / 180;
@@ -162,7 +163,14 @@ export async function initMap({ type, lat, lng }: { type: CarPlaceKeys, lat: any
 
   map.addListener('bounds_changed', async function () {
     // render map with new bounds
+    if (bounds_changed_controller_timer) {
+      bounds_changed_controller_timer = clearTimeout(bounds_changed_controller_timer);
+    }
+
     const bounds = map.getBounds();
-    await getPlacesForMap(type, selectedMapCenter, dependencies, bounds);
+    
+    bounds_changed_controller_timer = setTimeout(async () => {
+      await getPlacesForMap(type, selectedMapCenter, dependencies, bounds);
+    }, 500)
   });
 }
